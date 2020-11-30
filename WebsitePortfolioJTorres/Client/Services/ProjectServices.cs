@@ -21,19 +21,19 @@ namespace WebsitePortfolioJTorres.Client.Services
         public async Task AddProject(Project addedProj)
         {
             Console.WriteLine("AddProject called from ProductService.cs");
-            await httpClient.PostAsJsonAsync("api/project", addedProj);
+            await httpClient.PostAsJsonAsync("api/MyProjects", addedProj);
         }
 
         public async Task<List<Project>> GetProjects()
         {
             Console.WriteLine("GetProjects called from ProductService.cs");
-            var projInfo = await this.httpClient.GetFromJsonAsync<List<Project>>("api/project");
+            var projInfo = await this.httpClient.GetFromJsonAsync<List<Project>>("api/MyProjects");
             return projInfo;
         }
 
         public async Task<string> UploadFileImage(MultipartFormDataContent content)
         {
-            var postResult = await httpClient.PostAsync("api/project", content);
+            var postResult = await httpClient.PostAsync("api/MyProjects", content);
             var postContent = await postResult.Content.ReadAsStringAsync();
 
             if (!postResult.IsSuccessStatusCode)
@@ -42,7 +42,7 @@ namespace WebsitePortfolioJTorres.Client.Services
             }
             else 
             {
-                var imgUrl = Path.Combine("api/project", postContent);
+                var imgUrl = Path.Combine("api/MyProjects", postContent);
                 return imgUrl;
             }
         }

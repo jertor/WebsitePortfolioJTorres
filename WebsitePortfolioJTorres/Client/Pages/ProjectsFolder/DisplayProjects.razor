@@ -1,5 +1,63 @@
-﻿<h3>DisplayProjects</h3>
+﻿@using Microsoft.AspNetCore.Authorization
+@using WebsitePortfolioJTorres.Shared.Models
+@using WebsitePortfolioJTorres.Shared.Interfaces;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager urlNavigationManager
+@inject IProjectService _projectService
+
+<!--Header-->
+<h4>@Title</h4>
+
+
+<!--Body-->
+@if (ProjList == null)
+{
+    <p>Loading Projects</p>
+}
+else 
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Text</th>
+                <th>Img Name</th>
+                <th>Img</th>
+                @if (authState.User.Identity.IsAuthenticated) 
+                {
+                    <th>
+                        <a href="/editprojects">edit</a>
+                    </th> 
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Project proj in ProjList) 
+            {
+                <tr>
+                    <td>@proj.Title</td>
+                    <td>@proj.Text</td>
+                    <td>@proj.ImgName</td>
+                    <td>@proj.ImgFile</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
 
 @code {
+    [Parameter]
+    public string Title { get; set; }
 
+    private AuthenticationState authState;
+    List<Project> ProjList = new List<Project>();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        ProjList = await _projectService.GetProjects();
+    }
 }

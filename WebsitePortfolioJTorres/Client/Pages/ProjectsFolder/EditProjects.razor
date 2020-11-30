@@ -1,5 +1,110 @@
-﻿<h3>EditProjects</h3>
+﻿@page "/editprojects"
+@using WebsitePortfolioJTorres.Shared.Interfaces;
+@using WebsitePortfolioJTorres.Shared.Models;
+@using Microsoft.AspNetCore.Components
+@using System.Net.Http
+@using Tewr.Blazor.FileReader
+@using System.Net.Http.Headers
+@inject HttpClient _httpClient
+@inject NavigationManager _urlNavigationManager
+@inject IProjectService _projectService
+<!--Header-->
+<h3>Edit Projects</h3>
+
+
+<!--Body-->
+<EditForm Model="@project">
+
+    <!--ProjectName-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Title:</label>
+        <div class="col-sm-3">
+            <InputText class="form-control"
+                       @bind-Value="@project.Title" />
+            @*<ValidationMessage For="@resume.MyExperience.Employer"/>*@
+        </div>
+    </div>
+
+    <!--Text-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Text:</label>
+        <div class="col-sm-3">
+            <InputText class="form-control"
+                       @bind-Value="@project.Text" />
+            @*<ValidationMessage For="@resume.MyExperience.Employer"/>*@
+        </div>
+    </div>
+
+    <!--ImgName-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Img Name:</label>
+        <div class="col-sm-3">
+            <InputText class="form-control"
+                       @bind-Value="@project.ImgName" />
+            @*<ValidationMessage For="@resume.MyExperience.Employer"/>*@
+        </div>
+    </div>
+
+    <!--UploadImg-->
+    <input type="file" @ref="_input" @onchange="HandleSelected" accept=".jpg, .jpeg, png" />
+    @if (ImgUrl != null)
+    {
+        <div>
+            <img src="@ImgUrl" style="width:300px" />
+        </div>
+    }
+
+</EditForm>
 
 @code {
+    Project project = new Project();
+    //Start UsedForImageFile
+    private ElementReference _input;
+    [Parameter]
+    public string ImgUrl { get; set; }
+    public EventCallback<string> OnChange { get; set; }
+    [Inject]
+    public IFileReaderService FileReaderService { get; set; }
+    [Inject]
+    public IProjectService ProjectService { get; set; }
+    //End UsedForImage
 
+    private async Task AddProject()
+    {
+        Console.WriteLine("AddNewExperience called from EditExperience.razor");
+        await _projectService.AddProject(project);
+        StateHasChanged();
+    }
+
+    protected async Task UpdateProject()
+    {
+        Console.WriteLine("Update called from EditProjects.razor");
+    }
+
+
+    void Cancel()
+    {
+        _urlNavigationManager.NavigateTo("/resume");
+    }
+
+    private async Task HandleSelected()
+    {
+        foreach (var file in await FileReaderService.CreateReference(_input).EnumerateFilesAsync())
+        {
+            if (file != null)
+            {
+                var fileInfo = await file.ReadFileInfoAsync();
+                using (var ms = await file.CreateMemoryStreamAsync(4 * 1024))
+                {
+                    var content = new MultipartFormDataContent();
+                    content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "image", fileInfo.Name);
+
+                    ImgUrl = await ProjectService.UploadFileImage(content);
+
+                    await OnChange.InvokeAsync(ImgUrl);
+                }
+            }
+        }
+    }
 }

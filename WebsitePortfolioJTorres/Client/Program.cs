@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WebsitePortfolioJTorres.Shared.Interfaces;
 using WebsitePortfolioJTorres.Client.Services;
+using Tewr.Blazor.FileReader;
 
 namespace WebsitePortfolioJTorres.Client
 {
@@ -31,6 +32,8 @@ namespace WebsitePortfolioJTorres.Client
             //My Services
             builder.Services.AddTransient<IResumeService, ResumeServices>();
             builder.Services.AddTransient<IBlogService, BlogServices>();
+            builder.Services.AddTransient<IProjectService, ProjectServices>();
+            builder.Services.AddFileReaderService(o => o.UseWasmSharedBuffer = true);// Added to upload files
 
             await builder.Build().RunAsync();
         }

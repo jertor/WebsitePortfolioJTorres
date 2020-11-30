@@ -15,7 +15,7 @@ namespace WebsitePortfolioJTorres.Shared.Interfaces
        //DeleteProject
 
 
-        Task<string> UploadFileImage(MultipartFormDataContent content);
+        Task<string> UploadFileImage(MultipartFormDataContent content); //Using package Tewr.Blazor.FileReader
 
     }
 }
