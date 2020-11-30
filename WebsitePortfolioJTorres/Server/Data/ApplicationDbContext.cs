@@ -21,10 +21,10 @@ namespace WebsitePortfolioJTorres.Server.Data
 
         public DbSet<Resume> ResumeTbl { get; set; }
         public DbSet<ContactInfo> Contacts { get; set; }
-
-        //public DbSet<Education> Degrees { get; set; }
-        //public DbSet<Experience> Experiences { get; set; }
-        //public DbSet<BlogEntry> BlogEntries { get; set; }
+        public DbSet<Education> Degrees { get; set; }
+        public DbSet<Experience> Experiences { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<BlogEntry> BlogEntries { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -35,17 +35,17 @@ namespace WebsitePortfolioJTorres.Server.Data
             var contactEntity = builder.Entity<ContactInfo>();
             contactEntity.HasKey(ContactInfo => ContactInfo.ContactId);
 
-            //var eduEntity = builder.Entity<Education>();
-            //eduEntity.HasKey(Education => Education.EduId);
+            var eduEntity = builder.Entity<Education>();
+            eduEntity.HasKey(Education => Education.EduId);
 
-            //var expEntity = builder.Entity<Experience>();
-            //expEntity.HasKey(Experience => Experience.ExpId);
+            var expEntity = builder.Entity<Experience>();
+            expEntity.HasKey(Experience => Experience.ExpId);
 
-            //var skillEnitity = builder.Entity<Skill>();
-            //skillEnitity.HasKey(Skill => Skill.SkillId);
+            var skillEnitity = builder.Entity<Skill>();
+            skillEnitity.HasKey(Skill => Skill.SkillId);
 
-            //var blogEnitity = builder.Entity<BlogEntry>();
-            //blogEnitity.HasKey(BlogEntry => BlogEntry.BlogId);
+            var blogEnitity = builder.Entity<BlogEntry>();
+            blogEnitity.HasKey(BlogEntry => BlogEntry.BlogId);
 
         }
     }

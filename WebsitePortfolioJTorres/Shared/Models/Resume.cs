@@ -10,5 +10,6 @@ namespace WebsitePortfolioJTorres.Shared.Models
         public ContactInfo MyContactInfo { get; set; } = new ContactInfo();
         public Education MyEducation { get; set; } = new Education();
         public Experience MyExperience { get; set; } = new Experience();
+        public Skill MySkills { get; set; } = new Skill();
     }
 }

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebsitePortfolioJTorres.Server", "WebsitePortfolioJTorres\Server\WebsitePortfolioJTorres.Server.csproj", "{C9D05E37-1509-4019-95F4-BF8279752C42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebsitePortfolioJTorres.Server", "WebsitePortfolioJTorres\Server\WebsitePortfolioJTorres.Server.csproj", "{C9D05E37-1509-4019-95F4-BF8279752C42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebsitePortfolioJTorres.Client", "WebsitePortfolioJTorres\Client\WebsitePortfolioJTorres.Client.csproj", "{6E220C4E-F047-4724-AF4D-A07F73315B20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebsitePortfolioJTorres.Client", "WebsitePortfolioJTorres\Client\WebsitePortfolioJTorres.Client.csproj", "{6E220C4E-F047-4724-AF4D-A07F73315B20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebsitePortfolioJTorres.Shared", "WebsitePortfolioJTorres\Shared\WebsitePortfolioJTorres.Shared.csproj", "{173F0F01-8942-4139-BA69-264CE9C7B638}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebsitePortfolioJTorres.Shared", "WebsitePortfolioJTorres\Shared\WebsitePortfolioJTorres.Shared.csproj", "{173F0F01-8942-4139-BA69-264CE9C7B638}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

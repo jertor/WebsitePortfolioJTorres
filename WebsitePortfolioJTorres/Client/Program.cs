@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using WebsitePortfolioJTorres.Shared.Interfaces;
+using WebsitePortfolioJTorres.Client.Services;
 
 namespace WebsitePortfolioJTorres.Client
 {
@@ -25,6 +27,9 @@ namespace WebsitePortfolioJTorres.Client
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("WebsitePortfolioJTorres.ServerAPI"));
 
             builder.Services.AddApiAuthorization();
+
+            //My Services
+            builder.Services.AddTransient<IResumeService, ResumeServices>();
 
             await builder.Build().RunAsync();
         }

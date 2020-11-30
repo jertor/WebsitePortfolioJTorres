@@ -1,0 +1,103 @@
+﻿@page "/editcontacts"
+@using Microsoft.AspNetCore.Authorization
+@using WebsitePortfolioJTorres.Shared.Models
+@using WebsitePortfolioJTorres.Shared.Interfaces;
+@using Microsoft.AspNetCore.Components
+@inject HttpClient _httpClient
+@inject NavigationManager _urlNavigationManager
+@inject IResumeService _resumeService
+<!--Header-->
+<h3>Edit Contact Details</h3>
+
+<!--Body-->
+<EditForm Model="@resume" OnInvalidSubmit="@UpdateContacts">
+
+    <!--Name-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Name:</label>
+        <div class="col-sm-3">
+            <InputText class="form-control"
+                       @bind-Value="@resume.MyContactInfo.Name" />
+            @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+        </div>
+    </div>
+
+    <!--Phone-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Number:</label>
+        <div class="col-sm-3">
+            <InputNumber class="form-control"
+                         @bind-Value="@resume.MyContactInfo.Phone" />
+            @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+        </div>
+    </div>
+
+    <!--Email-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Email:</label>
+        <div class="col-sm-3">
+            <InputText class="form-control"
+                       @bind-Value="@resume.MyContactInfo.Email" />
+            @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+        </div>
+    </div>
+
+    <!--Address-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Address:</label>
+        <div class="col-sm-3">
+            <InputText class="form-control"
+                       @bind-Value="@resume.MyContactInfo.Address" />
+            @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+        </div>
+    </div>
+
+    <!--Buttons-->
+    <div class="form-group">
+        <!--Add Contact Info-->
+        <button type="submit" class="btn btn-primary" @onclick="AddNewContactInfo">Add</button>
+        <!--Save Changes-->
+        <button type="submit" class="btn btn-primary" @onclick="UpdateContacts">Save</button>
+        <!--Cancel-->
+        <button class="btn btn-light" @onclick="@Cancel">Cancel</button>
+    </div>
+
+
+</EditForm>
+
+
+
+@code {
+    //[Parameter]
+    //public string Title { get; set; }
+    Resume resume = new Resume();
+    //ContactInfo contactDetails = new ContactInfo();
+
+
+    private async Task AddNewContactInfo()
+    {
+        Console.WriteLine("AddContact called from EditContacts.razor");
+        await _resumeService.AddContact(resume.MyContactInfo);
+        StateHasChanged();
+    }
+
+
+    protected async Task HandleValidSubmit()
+    {
+
+    }
+
+
+    protected async Task UpdateContacts()
+    {
+        Console.WriteLine("Update Called from EditContacts.razor");
+    }
+
+
+
+
+    void Cancel()
+    {
+        _urlNavigationManager.NavigateTo("/resume");
+    }
+}

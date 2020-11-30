@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using WebsitePortfolioJTorres.Shared.Models
+@using WebsitePortfolioJTorres.Shared.Interfaces;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager urlNavigationManager
+@inject IResumeService _resumeService
+<!--Header-->
+<h4>@Title</h4>
+
+<!--Body-->
+@if (ContactsList == null)
+{
+    <div> Loading contacts...</div>
+}
+
+<!--Body-->
+@if (ContactsList == null)
+{
+    <div> Loading contacts...</div>
+}
+else
+{
+    <!--thead = table head
+        tr = table row
+        th =??-->
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Ph</th>
+                <th>Email</th>
+                <th>Address</th>
+                <!--Edit this if statment to only allow viewing with ADMIN privilages-->
+                @if (authState.User.Identity.IsAuthenticated)
+                {
+                    <th>
+                        <a href="/editcontacts"> edit </a>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var field in ContactsList)
+            {
+                <tr>
+                    <td>@field.Name</td>
+                    <td>@field.Phone</td>
+                    <td>@field.Email</td>
+                    <td>@field.Address</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    private AuthenticationState authState;
+    List<ContactInfo> ContactsList = new List<ContactInfo>();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        ContactsList = await _resumeService.GetContactInfo();
+
+    }
+}
