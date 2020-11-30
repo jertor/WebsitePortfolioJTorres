@@ -16,5 +16,9 @@ namespace WebsitePortfolioJTorres.Shared.Interfaces
         //EducationServices
         Task<List<Education>> GetEducationInfo();
         Task AddEducation(Education addedEdu);
+
+        //ExperienceServices
+        Task<List<Experience>> GetExperienceInfo();
+        Task AddExperience(Experience addedExp);
     }
 }

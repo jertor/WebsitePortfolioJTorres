@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\ExperienceFolder\" />
     <Folder Include="Pages\BlogFolder\" />
   </ItemGroup>
 

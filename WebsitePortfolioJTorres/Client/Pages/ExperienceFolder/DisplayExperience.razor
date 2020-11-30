@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using WebsitePortfolioJTorres.Shared.Models
+@using WebsitePortfolioJTorres.Shared.Interfaces;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager urlNavigationManager
+@inject IResumeService _resumeService
+<!--Header-->
+<h4>@Title</h4>
+
+<!--Body-->
+@if (ExpList == null)
+{
+    <p>Loading Experience... </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employer</th>
+                @*<th>Major</th>*@
+                <th>Start Date</th>
+                <th>End Date</th>
+                @if (authState.User.Identity.IsAuthenticated)
+                {
+                    <th>
+                        <a href="/editexp"> edit </a>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Experience exp in ExpList)
+            {
+                <tr>
+                    <td>@exp.Employer</td>
+                    @*<th>@school.Major</th>*@
+                    <td>@exp.StartDate.ToString("MMM - yyyy")</td>
+                    @if (exp.EndDate >= DateTime.Today)
+                    {
+                        <td>Current</td>
+                    }
+                    else
+                    {
+                        <td>@exp.EndDate.ToString("MMM - yyyy")</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+
+    private AuthenticationState authState;
+    List<Experience> ExpList = new List<Experience>();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        ExpList = await _resumeService.GetExperienceInfo();
+    }
+}
