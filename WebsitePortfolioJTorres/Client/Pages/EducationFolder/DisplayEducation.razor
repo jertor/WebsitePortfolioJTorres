@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using WebsitePortfolioJTorres.Shared.Models
+@using WebsitePortfolioJTorres.Shared.Interfaces;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager urlNavigationManager
+@inject IResumeService _resumeService
+
+<!--Header-->
+<h4>@Title</h4>
+
+<!--Body-->
+@if (EduList == null)
+{
+    <p>Loading Education... </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>School Name</th>
+                @*<th>Major</th>*@
+                <th>Start Date</th>
+                <th>End Date</th>
+                @if (authState.User.Identity.IsAuthenticated)
+                {
+                    <th>
+                        <a href="/editedu"> edit </a>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Education school in EduList)
+            {
+                <tr>
+                    <td>@school.SchoolName</td>
+                    @*<th>@school.Major</th>*@
+                    <td>@school.StartDate.ToString("MMM - yyyy")</td>
+                    @if (school.EndDate >= DateTime.Today)
+                    {
+                        <td>Current</td>
+                    }
+                    else
+                    {
+                        <td>@school.EndDate.ToString("MMM - yyyy")</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; }
+
+    private AuthenticationState authState;
+    List<Education> EduList = new List<Education>();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        EduList = await _resumeService.GetEducationInfo();
+    }
+
+}

@@ -24,6 +24,11 @@ namespace WebsitePortfolioJTorres.Client.Services
             Console.WriteLine("AddContact called from ResumeService.cs");
             await httpClient.PostAsJsonAsync("api/contacts", addedContact);
         }
+        public async Task AddEducation(Education addedEdu)
+        {
+            Console.WriteLine("AddEducation called from ResumeService.cs");
+            await httpClient.PostAsJsonAsync("api/education", addedEdu);
+        }
 
         //GET
         public async Task<List<ContactInfo>> GetContactInfo()
@@ -33,6 +38,12 @@ namespace WebsitePortfolioJTorres.Client.Services
                 var contactInfo = await this.httpClient.GetFromJsonAsync<List<ContactInfo>>("api/contacts");
                 return contactInfo;
             }
+        }
+        public async Task<List<Education>> GetEducationInfo()
+        {
+            Console.WriteLine("GetEducationInfo called from ResumeService.cs");
+            var eduInfo = await this.httpClient.GetFromJsonAsync<List<Education>>("api/education");
+            return eduInfo;
         }
 
     }

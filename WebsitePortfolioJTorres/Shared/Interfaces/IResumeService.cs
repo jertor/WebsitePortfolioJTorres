@@ -12,5 +12,9 @@ namespace WebsitePortfolioJTorres.Shared.Interfaces
         Task<List<ContactInfo>> GetContactInfo();
         Task AddContact(ContactInfo addedContact);
         //Task<ContactInfo> UpdateContact(ContactInfo updatedContact); FIX THIS
+
+        //EducationServices
+        Task<List<Education>> GetEducationInfo();
+        Task AddEducation(Education addedEdu);
     }
 }
