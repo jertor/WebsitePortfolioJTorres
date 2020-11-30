@@ -25,13 +25,13 @@ namespace WebsitePortfolioJTorres.Server.Data
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<BlogEntry> BlogEntries { get; set; }
-        //public DbSet<Project> Projects { get; set; } //Use this to add the Project table after the model is done
+        public DbSet<Project> Projects { get; set; } //Use this to add the Project table after the model is done
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            //Database Keys
+            //Database Primary Keys
             var contactEntity = builder.Entity<ContactInfo>();
             contactEntity.HasKey(ContactInfo => ContactInfo.ContactId);
 
@@ -46,6 +46,10 @@ namespace WebsitePortfolioJTorres.Server.Data
 
             var blogEnitity = builder.Entity<BlogEntry>();
             blogEnitity.HasKey(BlogEntry => BlogEntry.BlogId);
+
+            var projectEntity = builder.Entity<Project>();
+            projectEntity.HasKey(Project => Project.ProjId);
+
 
         }
     }

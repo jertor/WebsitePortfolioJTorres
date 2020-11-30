@@ -8,5 +8,7 @@ namespace WebsitePortfolioJTorres.Shared.Models
     {
         public int ProjId { get; set; }
         public string Name { get; set; }
+        public string ImageFilename { get; set; }
+
     }
 }
