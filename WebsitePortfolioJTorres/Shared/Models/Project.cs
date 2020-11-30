@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WebsitePortfolioJTorres.Shared.Models
 {
-    public class Projects
+    public class Project
     {
         public int ProjId { get; set; }
         public string Name { get; set; }

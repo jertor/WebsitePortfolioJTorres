@@ -25,7 +25,7 @@ namespace WebsitePortfolioJTorres.Server.Data
         public DbSet<Experience> Experiences { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<BlogEntry> BlogEntries { get; set; }
-
+        //public DbSet<Project> Projects { get; set; } //Use this to add the Project table after the model is done
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

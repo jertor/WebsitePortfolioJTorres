@@ -30,6 +30,7 @@ namespace WebsitePortfolioJTorres.Client
 
             //My Services
             builder.Services.AddTransient<IResumeService, ResumeServices>();
+            builder.Services.AddTransient<IBlogService, BlogServices>();
 
             await builder.Build().RunAsync();
         }
