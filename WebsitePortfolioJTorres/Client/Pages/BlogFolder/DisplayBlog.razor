@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using WebsitePortfolioJTorres.Shared.Models
+@using WebsitePortfolioJTorres.Shared.Interfaces;
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager urlNavigationManager
+@inject IBlogService _blogService
+<!--Header-->
+<h3>Blog Entries</h3>
+
+<!--Body-->
+@if (BlogList == null)
+{
+    <p>Loading Blog Entries</p>
+}
+else
+{
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Text</th>
+                <th>Date Added</th>
+                @if (authState.User.Identity.IsAuthenticated)
+                {
+                    <th>
+                        <a href="/editblog"> edit </a>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (BlogEntry blog in BlogList)
+            {
+                <tr>
+                    <td>@blog.Title</td>
+                    <td>@blog.Text</td>
+                    <td>@blog.Date</td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+}
+
+
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; }
+
+    private AuthenticationState authState;
+    List<BlogEntry> BlogList = new List<BlogEntry>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        BlogList = await _blogService.GetBlogInfo();
+
+    }
+
+
+}

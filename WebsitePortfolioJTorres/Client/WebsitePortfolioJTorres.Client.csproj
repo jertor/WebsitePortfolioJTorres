@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Shared\WebsitePortfolioJTorres.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\BlogFolder\" />
-  </ItemGroup>
-
 </Project>

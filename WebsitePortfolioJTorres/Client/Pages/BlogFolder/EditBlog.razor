@@ -1,0 +1,71 @@
+﻿@page "/editblog"
+@using Microsoft.AspNetCore.Authorization
+@using WebsitePortfolioJTorres.Shared.Models
+@using WebsitePortfolioJTorres.Shared.Interfaces;
+@using Microsoft.AspNetCore.Components
+@inject HttpClient _httpClient
+@inject NavigationManager _urlNavigationManager
+@inject IBlogService _blogService
+<!--Header-->
+<h3>Edit Blog</h3>
+
+
+<EditForm Model="@blogEntry">
+
+    <!--Title-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Title:</label>
+        <div class="col-sm-3">
+            <InputText class="form-control"
+                       @bind-Value="@blogEntry.Title" />
+            @*<ValidationMessage For="@blogEntry.Title"/>*@
+        </div>
+    </div>
+
+    <!--Text-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Text:</label>
+        <div class="col-sm-3">
+            <InputText class="form-control"
+                       @bind-Value="@blogEntry.Text" />
+            @*<ValidationMessage For="@blogEntry.Title"/>*@
+        </div>
+    </div>
+
+    <!--DateAdded-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Title:</label>
+        <div class="col-sm-3">
+            <InputDate class="form-control"
+                       @bind-Value="@blogEntry.Date" />
+            @*<ValidationMessage For="@blogEntry.Title"/>*@
+        </div>
+    </div>
+
+    <!--Checkbox For Assignment Specs-->
+    <div class="form-group row mb1">
+        <label class="col-sm-3 col-form-label">Title:</label>
+        <div class="col-sm-3">
+            <InputCheckbox class="form-control"
+                           @bind-Value="@blogEntry.ExampleCheckbox" />
+            @*<ValidationMessage For="@blogEntry.Title"/>*@
+        </div>
+        @if (blogEntry.ExampleCheckbox == true)
+        {
+            <p>show some text</p>
+        }
+    </div>
+
+</EditForm>
+
+@code {
+    BlogEntry blogEntry = new BlogEntry();
+
+    private async Task AddNewBlog()
+    {
+        Console.WriteLine("AddNewBlog called from EditBlog.razor");
+        await _blogService.AddBlog(blogEntry);
+        StateHasChanged();
+    }
+
+}
