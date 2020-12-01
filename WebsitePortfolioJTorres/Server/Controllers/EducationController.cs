@@ -37,5 +37,25 @@ namespace WebsitePortfolioJTorres.Server.Controllers
 
             return CreatedAtAction("GetEducation", new { id = eduAdded.EduId, eduAdded });
         }
+
+
+        // PUT: api/education
+        [HttpPut]
+        public async Task<ActionResult<Education>> UpdateEducation(Education eduUpdated)
+        {
+            db.Entry(eduUpdated).State = EntityState.Modified;
+
+            var eduToUpdate = await GetEducation();
+            try
+            {
+                await db.SaveChangesAsync();
+
+                return await UpdateEducation(eduUpdated);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data");
+            }
+        }
     }
 }

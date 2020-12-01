@@ -2,11 +2,10 @@
 @using WebsitePortfolioJTorres.Shared.Models
 @using WebsitePortfolioJTorres.Shared.Interfaces;
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NavigationManager urlNavigationManager
+@inject NavigationManager _urlNavigationManager
 @inject IResumeService _resumeService
-
 <!--Header-->
-<h4>@Title</h4>
+<h3>@Title</h3>
 
 <!--Body-->
 @if (EduList == null)
@@ -15,8 +14,8 @@
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-sm">
+        <thead class="thead-light">
             <tr>
                 <th>School Name</th>
                 @*<th>Major</th>*@
@@ -24,9 +23,10 @@ else
                 <th>End Date</th>
                 @if (authState.User.Identity.IsAuthenticated)
                 {
-                    <th>
-                        <a href="/editedu"> edit </a>
-                    </th>
+                    @*<th>
+                            <a href="/editedu"> add </a>
+                        </th>*@
+                    <button type="submit" class="btn-sm btn-primary" @onclick="NavToAddEducation">Add</button>
                 }
             </tr>
         </thead>
@@ -45,10 +45,63 @@ else
                     {
                         <td>@school.EndDate.ToString("MMM - yyyy")</td>
                     }
+                    @if (authState.User.Identity.IsAuthenticated)
+                    {
+                        @*<button class="btn-xs btn-success" @onclick="@(() => OnEditClick(school))">  add  </button>*@
+                        <button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(school))">  edit  </button>
+                        @*<button class="btn-xs btn-danger" @onclick="@(() => OnEditClick(school))">  delete  </button>*@
+                    }
+
                 </tr>
             }
         </tbody>
     </table>
+
+    @if (bVisible)
+    {
+        <h5>Edit Education</h5>
+        <!--Body-->
+        <EditForm Model="@ResumeField">
+
+            <!--SchoolName-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">School Name:</label>
+                <div class="col-sm-3">
+                    <InputText class="form-control"
+                               @bind-Value="@ResumeField.MyEducation.SchoolName" /> <!--This was changed to text -->
+                    @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+                </div>
+            </div>
+
+            <!--Major-->
+            <!--StartDate-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">Start:</label>
+                <div class="col-sm-3">
+                    <InputDate class="form-control"
+                               @bind-Value="@ResumeField.MyEducation.StartDate" />
+                    @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+                </div>
+            </div>
+            <!--EndDate-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">End:</label>
+                <div class="col-sm-3">
+                    <InputDate class="form-control"
+                               @bind-Value="@ResumeField.MyEducation.EndDate" />
+                    @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+                </div>
+            </div>
+
+            <!--Buttons-->
+
+            <button class="btn-xs btn-success" @onclick="@UpdateOnValidSubmit">  update  </button>
+            <button class="btn-xs btn-light" @onclick="@Cancel"> cancel </button>
+            @*<button class="btn-xs btn-danger" @onclick="@DeleteOnValidSubmit"> delete </button>*@
+
+        </EditForm>
+
+    }
 }
 
 
@@ -58,8 +111,14 @@ else
     [Parameter]
     public string Title { get; set; }
 
+    private bool bVisible = false;
     private AuthenticationState authState;
+
+
     List<Education> EduList = new List<Education>();
+    Resume ResumeField = new Resume();
+    //Education education = new Education();
+
 
 
     protected async override Task OnInitializedAsync()
@@ -67,6 +126,43 @@ else
         await base.OnInitializedAsync();
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         EduList = await _resumeService.GetEducationInfo();
+    }
+
+
+    private async Task OnEditClick(Education eduSelected)
+    {
+        Console.WriteLine($"OnEdit Called for contact {eduSelected.SchoolName}");
+        this.ResumeField.MyEducation = eduSelected;
+        //this.education = eduSelected;
+
+        bVisible = true;
+        StateHasChanged();
+    }
+
+    private async Task UpdateOnValidSubmit()
+    {
+        Console.WriteLine("Update called from editeducation.razor");
+        await _resumeService.UpdateEducation(ResumeField.MyEducation);
+        StateHasChanged();
+        //bVisible = false;
+    }
+
+
+    private async Task DeleteOnValidSubmit()
+    {
+        Console.WriteLine("Delete called");
+    }
+
+
+    private void Cancel()
+    {
+        bVisible = false;
+    }
+
+
+    private void NavToAddEducation()
+    {
+        _urlNavigationManager.NavigateTo("addedu");
     }
 
 }
