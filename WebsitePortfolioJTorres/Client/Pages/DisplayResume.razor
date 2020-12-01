@@ -1,10 +1,13 @@
 ﻿@page "/resume"
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using WebsitePortfolioJTorres.Shared
 @using WebsitePortfolioJTorres.Client.Pages.ContactsFolder
 @using WebsitePortfolioJTorres.Client.Pages.EducationFolder
 @using WebsitePortfolioJTorres.Client.Pages.ExperienceFolder
-
+@*@attribute [Authorize]*@
+@*@inject HttpClient Http*@
 <!--Header-->
 <h2 style="text-align:center; color:black">My Resume</h2>
 <h4>About Me</h4>
@@ -19,9 +22,9 @@
 <br />
 
 <!--Body-->
-<DisplayContacts Title="Contact Me"/>
-<DisplayEducation Title="Education"/>
-<DisplayExperience Title="Experience"/>
+<DisplayContacts Title="Contact Me" />
+<DisplayEducation Title="Education" />
+<DisplayExperience Title="Experience" />
 
 
 

@@ -17,7 +17,7 @@
 
     <!--ProjectName-->
     <div class="form-group row mb1">
-        <label class="col-sm-3 col-form-label">Title:</label>
+        <label class="col-sm-3 col-form-label">Project Title:</label>
         <div class="col-sm-3">
             <InputText class="form-control"
                        @bind-Value="@project.Title" />
@@ -52,7 +52,18 @@
         <div>
             <img src="@ImgUrl" style="width:300px" />
         </div>
-    }
+    }<br /><br />
+
+    <!--Buttons-->
+    <div class="form-group">
+        <!--Add New Info-->
+        <button type="submit" class="btn btn-primary" @onclick="AddProject">Add</button>
+        <!--Save Changes-->
+        <button type="submit" class="btn btn-primary" @onclick="UpdateProject">Save</button>
+        <!--Cancel-->
+        <button class="btn btn-light" @onclick="@Cancel">Cancel</button>
+        <!--Delete-->
+    </div>
 
 </EditForm>
 
@@ -81,10 +92,14 @@
         Console.WriteLine("Update called from EditProjects.razor");
     }
 
+    protected async Task DeleteProject()
+    {
+        Console.WriteLine("Delete called from EditProjects.razor");
+    }
 
     void Cancel()
     {
-        _urlNavigationManager.NavigateTo("/resume");
+        _urlNavigationManager.NavigateTo("/projects");
     }
 
     private async Task HandleSelected()
