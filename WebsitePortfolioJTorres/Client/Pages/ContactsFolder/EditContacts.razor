@@ -1,4 +1,4 @@
-﻿@page "/editcontacts"
+﻿@page "/addcontact"
 @using Microsoft.AspNetCore.Authorization
 @using WebsitePortfolioJTorres.Shared.Models
 @using WebsitePortfolioJTorres.Shared.Interfaces;
@@ -7,10 +7,10 @@
 @inject NavigationManager _urlNavigationManager
 @inject IResumeService _resumeService
 <!--Header-->
-<h3>Edit Contact Details</h3>
+<h3>Add Contact</h3>
 
 <!--Body-->
-<EditForm Model="@resume" OnInvalidSubmit="@UpdateContacts">
+<EditForm Model="@resume" >
 
     <!--Name-->
     <div class="form-group row mb1">
@@ -55,9 +55,7 @@
     <!--Buttons-->
     <div class="form-group">
         <!--Add Contact Info-->
-        <button type="submit" class="btn btn-primary" @onclick="AddNewContactInfo">Add</button>
-        <!--Save Changes-->
-        <button type="submit" class="btn btn-primary" @onclick="UpdateContacts">Save</button>
+        <button type="submit" class="btn btn-primary" @onclick="AddOnValidSubmit">Add</button>
         <!--Cancel-->
         <button class="btn btn-light" @onclick="@Cancel">Cancel</button>
     </div>
@@ -68,32 +66,17 @@
 
 
 @code {
-    //[Parameter]
-    //public string Title { get; set; }
+
     Resume resume = new Resume();
-    //ContactInfo contactDetails = new ContactInfo();
 
 
-    private async Task AddNewContactInfo()
+    private async Task AddOnValidSubmit()
     {
         Console.WriteLine("AddContact called from EditContacts.razor");
         await _resumeService.AddContact(resume.MyContactInfo);
         StateHasChanged();
+        _urlNavigationManager.NavigateTo("/resume");
     }
-
-
-    protected async Task HandleValidSubmit()
-    {
-
-    }
-
-
-    protected async Task UpdateContacts()
-    {
-        Console.WriteLine("Update Called from EditContacts.razor");
-    }
-
-
 
 
     void Cancel()

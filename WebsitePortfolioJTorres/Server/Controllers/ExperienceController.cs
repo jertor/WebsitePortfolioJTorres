@@ -36,5 +36,40 @@ namespace WebsitePortfolioJTorres.Server.Controllers
 
             return CreatedAtAction("GetExperience", new { id = expAdded.ExpId }, expAdded);
         }
+
+        // PUT: api/experience
+        [HttpPut]
+        public async Task<ActionResult<Experience>> UpdateExperience(Experience expUpdated)
+        {
+            db.Entry(expUpdated).State = EntityState.Modified;
+
+            var expToUpdate = await GetExperience();
+            try
+            {
+                await db.SaveChangesAsync();
+
+                return await UpdateExperience(expUpdated);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data");
+            }
+        }
+
+        //DELETE
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Experience>> DeleteExperience(int id)
+        {
+            var experience = await db.Experiences.FindAsync(id);
+            if (experience == null)
+            {
+                return NotFound();
+            }
+
+            db.Experiences.Remove(experience);
+            await db.SaveChangesAsync();
+
+            return experience;
+        }
     }
 }

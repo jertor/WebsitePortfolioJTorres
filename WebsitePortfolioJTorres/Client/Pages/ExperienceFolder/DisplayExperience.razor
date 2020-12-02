@@ -2,30 +2,31 @@
 @using WebsitePortfolioJTorres.Shared.Models
 @using WebsitePortfolioJTorres.Shared.Interfaces;
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NavigationManager urlNavigationManager
+@inject NavigationManager _urlNavigationManager
 @inject IResumeService _resumeService
 <!--Header-->
-<h4>@Title</h4>
+<h3>@Title</h3>
 
 <!--Body-->
 @if (ExpList == null)
 {
-    <p>Loading Experience... </p>
+    <p>Loading Education... </p>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-sm">
+        <thead class="thead-light">
             <tr>
-                <th>Employer</th>
+                <th>School Name</th>
                 @*<th>Major</th>*@
                 <th>Start Date</th>
                 <th>End Date</th>
                 @if (authState.User.Identity.IsAuthenticated)
                 {
-                    <th>
-                        <a href="/editexp"> edit </a>
-                    </th>
+                    @*<th>
+                            <a href="/editedu"> add </a>
+                        </th>*@
+                    <button type="submit" class="btn-sm btn-primary" @onclick="NavToAddExperience">Add</button>
                 }
             </tr>
         </thead>
@@ -44,20 +45,81 @@ else
                     {
                         <td>@exp.EndDate.ToString("MMM - yyyy")</td>
                     }
+                    @if (authState.User.Identity.IsAuthenticated)
+                    {
+                        @*<button class="btn-xs btn-success" @onclick="@(() => OnEditClick(school))">  add  </button>*@
+                        <button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(exp))">  edit  </button>
+                        <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(exp.ExpId))">  delete  </button>
+                    }
+
                 </tr>
             }
         </tbody>
     </table>
+
+    @if (bVisible)
+    {
+        <h5>Edit Education</h5>
+        <!--Body-->
+        <EditForm Model="@ResumeField">
+
+            <!--SchoolName-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">School Name:</label>
+                <div class="col-sm-3">
+                    <InputText class="form-control"
+                               @bind-Value="@ResumeField.MyExperience.Employer" /> <!--This was changed to text -->
+                    @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+                </div>
+            </div>
+
+            <!--Major-->
+            <!--StartDate-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">Start:</label>
+                <div class="col-sm-3">
+                    <InputDate class="form-control"
+                               @bind-Value="@ResumeField.MyExperience.StartDate" />
+                    @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+                </div>
+            </div>
+            <!--EndDate-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">End:</label>
+                <div class="col-sm-3">
+                    <InputDate class="form-control"
+                               @bind-Value="@ResumeField.MyExperience.EndDate" />
+                    @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+                </div>
+            </div>
+
+            <!--Buttons-->
+
+            <button class="btn-xs btn-success" @onclick="@UpdateOnValidSubmit">  update  </button>
+            <button class="btn-xs btn-light" @onclick="@Cancel"> close </button>
+            @*<button class="btn-xs btn-danger" @onclick="@DeleteOnValidSubmit"> delete </button>*@
+
+        </EditForm>
+
+    }
 }
 
 
+
 @code {
+
     [Parameter]
     public string Title { get; set; }
-
-
+    [Inject]
+    public IJSRuntime Js { get; set; }  // used for Javascript confirm delete dialog
+    private bool bVisible = false;
     private AuthenticationState authState;
+
+
     List<Experience> ExpList = new List<Experience>();
+    Resume ResumeField = new Resume();
+    //Education education = new Education();
+
 
 
     protected async override Task OnInitializedAsync()
@@ -66,4 +128,52 @@ else
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         ExpList = await _resumeService.GetExperienceInfo();
     }
+
+
+    private async Task OnEditClick(Experience expSelected)
+    {
+        Console.WriteLine($"OnEdit Called for contact {expSelected.Employer}");
+        this.ResumeField.MyExperience = expSelected;
+        //this.education = eduSelected;
+
+        bVisible = true;
+        StateHasChanged();
+    }
+
+    private async Task UpdateOnValidSubmit()
+    {
+        Console.WriteLine("Update called from editeducation.razor");
+        await _resumeService.UpdateExperience(ResumeField.MyExperience);
+        StateHasChanged();
+        //bVisible = false;
+    }
+
+
+    private async Task DeleteOnValidSubmit(int id)
+    {
+        Console.WriteLine("Delete called");
+        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delet{ResumeField.MyExperience.Employer} ?");
+        if (confirmed)
+        {
+            await _resumeService.DeleteExperience(id);
+            StateHasChanged();
+        }
+
+    }
+
+
+    private void Cancel()
+    {
+        bVisible = false;
+    }
+
+
+    private void NavToAddExperience()
+    {
+        _urlNavigationManager.NavigateTo("addexp");
+    }
+
+
+
+
 }

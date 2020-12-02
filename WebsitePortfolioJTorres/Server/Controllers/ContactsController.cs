@@ -38,24 +38,39 @@ namespace WebsitePortfolioJTorres.Server.Controllers
             return CreatedAtAction("GetContacts", new { id = addContact.ContactId }, addContact);
         }
 
-        [HttpPut] //UpdateContact
-        public async Task<ActionResult<ContactInfo>> UpdateContactInfo(ContactInfo updateContact)
+        // PUT: api/contacts
+        [HttpPut]
+        public async Task<ActionResult<ContactInfo>> UpdateContact(ContactInfo contactUpdated)
         {
+            db.Entry(contactUpdated).State = EntityState.Modified;
+
+            var expToUpdate = await GetContacts();
             try
             {
-                var contactToUpdate = await GetContacts();
+                await db.SaveChangesAsync();
 
-                if (contactToUpdate == null)
-                {
-                    return NotFound($"Contact not found");
-                }
-
-                return await UpdateContactInfo(updateContact);
+                return await UpdateContact(contactUpdated);
             }
             catch (Exception)
             {
-                return StatusCode(500);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data");
             }
+        }
+
+        //DELETE: api/contacts
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ContactInfo>> DeleteExperience(int id)
+        {
+            var contactInfo = await db.Contacts.FindAsync(id);
+            if (contactInfo == null)
+            {
+                return NotFound();
+            }
+
+            db.Contacts.Remove(contactInfo);
+            await db.SaveChangesAsync();
+
+            return contactInfo;
         }
     }
 }

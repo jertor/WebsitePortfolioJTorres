@@ -26,8 +26,10 @@ else
                     @*<th>
                             <a href="/editedu"> add </a>
                         </th>*@
-                    <button type="submit" class="btn-sm btn-primary" @onclick="NavToAddEducation">Add</button>
+                    <th><button type="submit" class="btn-sm btn-primary" @onclick="NavToAddEducation">Add</button></th>
+                    
                 }
+                
             </tr>
         </thead>
         <tbody>
@@ -35,7 +37,7 @@ else
             {
                 <tr>
                     <td>@school.SchoolName</td>
-                    @*<th>@school.Major</th>*@
+                    <th>@school.Major</th>
                     <td>@school.StartDate.ToString("MMM - yyyy")</td>
                     @if (school.EndDate >= DateTime.Today)
                     {
@@ -47,9 +49,10 @@ else
                     }
                     @if (authState.User.Identity.IsAuthenticated)
                     {
-                        @*<button class="btn-xs btn-success" @onclick="@(() => OnEditClick(school))">  add  </button>*@
-                        <button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(school))">  edit  </button>
-                        <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(school.EduId))">  delete  </button>
+                        <td>
+                            <button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(school))">  edit  </button>
+                            <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(school.EduId))">  delete  </button>
+                        </td>
                     }
 
                 </tr>
@@ -74,6 +77,15 @@ else
             </div>
 
             <!--Major-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">Major:</label>
+                <div class="col-sm-3">
+                    <InputText class="form-control"
+                               @bind-Value="@ResumeField.MyEducation.Major" />
+                </div>
+            </div>
+
+
             <!--StartDate-->
             <div class="form-group row mb1">
                 <label class="col-sm-3 col-form-label">Start:</label>

@@ -11,7 +11,8 @@ namespace WebsitePortfolioJTorres.Shared.Interfaces
         //ContactInfoServices
         Task<List<ContactInfo>> GetContactInfo();
         Task AddContact(ContactInfo addedContact);
-        //Task<ContactInfo> UpdateContact(ContactInfo updatedContact); FIX THIS
+        Task<ContactInfo> UpdateContactInfo(ContactInfo updatedContactInfo);
+        Task DeleteContactInfo(int id);
 
         //EducationServices
         Task<List<Education>> GetEducationInfo();
@@ -22,5 +23,7 @@ namespace WebsitePortfolioJTorres.Shared.Interfaces
         //ExperienceServices
         Task<List<Experience>> GetExperienceInfo();
         Task AddExperience(Experience addedExp);
+        Task<Experience> UpdateExperience(Experience updatedExp);
+        Task DeleteExperience(int id);
     }
 }

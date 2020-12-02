@@ -1,4 +1,4 @@
-﻿@page "/editexp"
+﻿@page "/addexp"
 @using WebsitePortfolioJTorres.Shared.Interfaces;
 @using WebsitePortfolioJTorres.Shared.Models;
 @using Microsoft.AspNetCore.Components
@@ -6,81 +6,92 @@
 @inject NavigationManager _urlNavigationManager
 @inject IResumeService _resumeService
 <!--Header-->
-<h3>Edit Experience</h3>
+<h5>Add Education</h5>
 
 <!--Body-->
-<EditForm Model="@resume">
+<EditForm Model="@ResumeField">
 
-    <!--Employer-->
+
     <div class="form-group row mb1">
-        <label class="col-sm-3 col-form-label">Employer:</label>
+        <label class="col-sm-3 col-form-label">School Name:</label>
         <div class="col-sm-3">
             <InputText class="form-control"
-                       @bind-Value="@resume.MyExperience.Employer" />
-            @*<ValidationMessage For="@resume.MyExperience.Employer"/>*@
-
+                       @bind-Value="@ResumeField.MyExperience.Employer" />
+            @*<ValidationMessage For="@resume.MyContactInfo.Name" />*@
         </div>
     </div>
 
-    <!--StartDate-->
     <div class="form-group row mb1">
         <label class="col-sm-3 col-form-label">Start:</label>
         <div class="col-sm-3">
             <InputDate class="form-control"
-                       @bind-Value="@resume.MyExperience.StartDate" />
-            @*<ValidationMessage For="@resume.MyExperience.StartDate"/>*@
+                       @bind-Value="@ResumeField.MyExperience.StartDate" />
+            @*<ValidationMessage For="@resume.MyContactInfo.Name" />*@
         </div>
     </div>
 
-    <!--EndDate-->
     <div class="form-group row mb1">
         <label class="col-sm-3 col-form-label">End:</label>
         <div class="col-sm-3">
             <InputDate class="form-control"
-                       @bind-Value="@resume.MyExperience.EndDate" />
-            @*<ValidationMessage For="@resume.MyExperience.EndDate"/>*@
+                       @bind-Value="@ResumeField.MyExperience.EndDate" />
+            @*<ValidationMessage For="@resume.MyContactInfo.Name" />*@
         </div>
     </div>
 
+
+    <button type="submit" class="btn btn-success" @onclick="AddOnValidSubmit">Add</button>
+    <button type="submit" class="btn btn-light" @onclick="Cancel">Cancel</button>
+
     <!--Buttons-->
-    <div class="form-group">
-        <!--Add Experience-->
-        <button type="submit" class="btn btn-primary" @onclick="AddNewExperience">Add</button>
-        <!--SaveChanges-->
-        <button type="submit" class="btn btn-primary" @onclick="UpdateExperience">Save</button>
-        <!--Cancel-->
-        <button class="btn btn-light" @onclick="@Cancel">Cancel</button>
-    </div>
+    @*<div class="col">
+            <button type="submit"
+                    @onclick="@Update"
+                    class="@ButtonClass">
+                @ButtonTitle
+            </button>
+        </div>*@
+
 
 </EditForm>
 
 
+
 @code {
+    public Resume ResumeField { get; set; } = new Resume();
 
-    Resume resume = new Resume();
-
-    private async Task AddNewExperience()
+    private async Task AddOnValidSubmit()
     {
-        Console.WriteLine("AddNewExperience called from EditExperience.razor");
-        await _resumeService.AddExperience(resume.MyExperience);
+        Console.WriteLine("AddContact called from EditEducation.razor");
+        await _resumeService.AddExperience(ResumeField.MyExperience);
         StateHasChanged();
+        _urlNavigationManager.NavigateTo("resume");
     }
 
-    protected async Task UpdateExperience()
+    private void Cancel()
     {
-        Console.WriteLine("Update Called from EditEducation.razor");
+        _urlNavigationManager.NavigateTo("resume");
     }
 
 
-    void Cancel()
-    {
-        _urlNavigationManager.NavigateTo("/resume");
-    }
 
-    protected async Task HandleValidSubmit()
-    {
-
-    }
+    //[Parameter]
+    //public string ButtonTitle { get; set; }
+    //[Parameter]
+    //public string ButtonClass { get; set; }
+    //[Parameter]
+    ////public Resume ResumeField { get; set; }
+    //public Education EducationField { get; set; }
+    //[Parameter]
+    //public EventCallback Update { get; set; }
+    //[Parameter]
+    //public EventCallback Add { get; set; }
+    //[Parameter]
+    //public EventCallback<Education> EduChanged { get; set; }
+    //private void FieldChanged(string fieldName)
+    //{
+    //    EduChanged.InvokeAsync(EducationField);
+    //}
 
 
 }

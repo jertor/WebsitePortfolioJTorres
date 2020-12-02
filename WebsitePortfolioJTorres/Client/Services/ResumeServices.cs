@@ -61,6 +61,12 @@ namespace WebsitePortfolioJTorres.Client.Services
 
 
         //UPDATE
+        public async Task<ContactInfo> UpdateContactInfo(ContactInfo updatedContactInfo)
+        {
+            Console.WriteLine("Update called from resumeservice");
+            var updateContact = await httpClient.PutAsJsonAsync<ContactInfo>("api/contacts", updatedContactInfo);
+            return updatedContactInfo;
+        }
         public async Task<Education> UpdateEducation(Education updatedEdu)
         {
             Console.WriteLine("Update called from resumeservice");
@@ -68,14 +74,31 @@ namespace WebsitePortfolioJTorres.Client.Services
             return updatedEdu;
 
         }
+        public async Task<Experience> UpdateExperience(Experience updatedExp)
+        {
+            Console.WriteLine("Update called from resumeservice");
+            var updateExp = await httpClient.PutAsJsonAsync<Experience>("api/experience", updatedExp);
+            return updatedExp;
+
+        }
 
 
         //DELETE
+        public async Task DeleteContactInfo(int id)
+        {
+            await httpClient.DeleteAsync($"api/contacts/{id}");
+        }
         public async Task DeleteEducation(int id) 
         {
             await httpClient.DeleteAsync($"api/education/{id}");
 
         }
+        public async Task DeleteExperience(int id)
+        {
+            await httpClient.DeleteAsync($"api/experience/{id}");
+
+        }
+
 
     }
 }

@@ -2,71 +2,178 @@
 @using WebsitePortfolioJTorres.Shared.Models
 @using WebsitePortfolioJTorres.Shared.Interfaces;
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NavigationManager urlNavigationManager
+@inject NavigationManager _urlNavigationManager
 @inject IResumeService _resumeService
 <!--Header-->
-<h4>@Title</h4>
+<h3>@Title</h3>
 
 <!--Body-->
-@if (ContactsList == null)
+@if (ContactList == null)
 {
-    <div> Loading contacts...</div>
-}
-
-<!--Body-->
-@if (ContactsList == null)
-{
-    <div> Loading contacts...</div>
+    <p>Loading Contacts... </p>
 }
 else
 {
-    <!--thead = table head
-        tr = table row
-        th =??-->
     <table class="table table-sm">
-        <thead>
+        <thead class="thead-light">
             <tr>
-                <th>Name</th>
-                <th>Ph</th>
-                <th>Email</th>
-                <th>Address</th>
-                <!--Edit this if statment to only allow viewing with ADMIN privilages-->
+                <th>School Name</th>
+                @*<th>Major</th>*@
+                <th>Start Date</th>
+                <th>End Date</th>
                 @if (authState.User.Identity.IsAuthenticated)
                 {
-                    <th>
-                        <a href="/editcontacts"> edit </a>
-                    </th>
+                    @*<th>
+                            <a href="/editedu"> add </a>
+                        </th>*@
+                    <button type="submit" class="btn-sm btn-primary" @onclick="NavToAddContact">Add</button>
                 }
             </tr>
         </thead>
         <tbody>
-            @foreach (var field in ContactsList)
+            @foreach(ContactInfo contact in ContactList)
             {
                 <tr>
-                    <td>@field.Name</td>
-                    <td>@field.Phone</td>
-                    <td>@field.Email</td>
-                    <td>@field.Address</td>
+                    <td>@contact.Name</td>
+                    @*<th>@school.Major</th>*@
+                    <td>@contact.Phone</td>
+                    <td>@contact.Email</td>
+                    <td>@contact.Address</td>
+                    @if (authState.User.Identity.IsAuthenticated)
+                    {
+                        <button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(contact))">  edit  </button>
+                        <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(contact.ContactId))">  delete  </button>
+                    }
+
                 </tr>
             }
         </tbody>
     </table>
+
+    @if (bVisible)
+    {
+        <h5>Edit Education</h5>
+        <!--Body-->
+        <EditForm Model="@ResumeField">
+
+            <!--Name-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">School Name:</label>
+                <div class="col-sm-3">
+                    <InputText class="form-control"
+                               @bind-Value="@ResumeField.MyContactInfo.Name" />
+                    @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+                </div>
+            </div>
+            <!--Phone-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">Start:</label>
+                <div class="col-sm-3">
+                    <InputNumber class="form-control"
+                               @bind-Value="@ResumeField.MyContactInfo.Phone" />
+                    @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+                </div>
+            </div>
+            <!--Email-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">End:</label>
+                <div class="col-sm-3">
+                    <InputText class="form-control"
+                               @bind-Value="@ResumeField.MyContactInfo.Email" />
+                    @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+                </div>
+            </div>
+            <!--Address-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">End:</label>
+                <div class="col-sm-3">
+                    <InputText class="form-control"
+                               @bind-Value="@ResumeField.MyContactInfo.Address" />
+                    @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
+                </div>
+            </div>
+
+            <!--Buttons-->
+
+            <button class="btn-xs btn-success" @onclick="@UpdateOnValidSubmit">  update  </button>
+            <button class="btn-xs btn-light" @onclick="@Cancel"> close </button>
+            @*<button class="btn-xs btn-danger" @onclick="@DeleteOnValidSubmit"> delete </button>*@
+
+        </EditForm>
+
+    }
 }
 
+
+
 @code {
+
     [Parameter]
     public string Title { get; set; }
-
+    [Inject]
+    public IJSRuntime Js { get; set; }  // used for Javascript confirm delete dialog
+    private bool bVisible = false;
     private AuthenticationState authState;
-    List<ContactInfo> ContactsList = new List<ContactInfo>();
+
+
+    List<ContactInfo> ContactList = new List<ContactInfo>();
+    Resume ResumeField = new Resume();
+    //Education education = new Education();
+
 
 
     protected async override Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        ContactsList = await _resumeService.GetContactInfo();
+        ContactList = await _resumeService.GetContactInfo();
+    }
+
+
+    private async Task OnEditClick(ContactInfo contactSelected)
+    {
+        Console.WriteLine($"OnEdit Called for contact {contactSelected.Name}");
+        this.ResumeField.MyContactInfo = contactSelected;
+        //this.education = eduSelected;
+
+        bVisible = true;
+        StateHasChanged();
+    }
+
+    private async Task UpdateOnValidSubmit()
+    {
+        Console.WriteLine("Update called from editeducation.razor");
+        await _resumeService.UpdateContactInfo(ResumeField.MyContactInfo);
+        StateHasChanged();
+        //bVisible = false;
+    }
+
+
+    private async Task DeleteOnValidSubmit(int id)
+    {
+        Console.WriteLine("Delete called");
+        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delet{ResumeField.MyContactInfo.Name} ?");
+        if (confirmed)
+        {
+            await _resumeService.DeleteContactInfo(id);
+            StateHasChanged();
+        }
 
     }
+
+
+    private void Cancel()
+    {
+        bVisible = false;
+    }
+
+
+    private void NavToAddContact()
+    {
+        _urlNavigationManager.NavigateTo("addcontact");
+    }
+
+
+
+
 }
