@@ -66,7 +66,7 @@ namespace WebsitePortfolioJTorres.Client.Services
             Console.WriteLine("Update called from resumeservice");
             var updateEdu = await httpClient.PutAsJsonAsync<Education>("api/education", updatedEdu);
             return updatedEdu;
-            //return await httpClient.PutAsJsonAsync<Education>("api/experience", updatedEdu);
+
         }
 
 

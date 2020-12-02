@@ -22,9 +22,10 @@ else
                 <th>Date Added</th>
                 @if (authState.User.Identity.IsAuthenticated)
                 {
-                    <th>
-                        <a href="/editblog"> edit </a>
-                    </th>
+                    <button type="submit" class="btn-sm btn-primary" @onclick="NavToAddBlog">Add</button>
+                    @*<th>
+                            <a href="/editblog"> edit </a>
+                        </th>*@
                 }
             </tr>
         </thead>
@@ -35,11 +36,87 @@ else
                     <td>@blog.Title</td>
                     <td>@blog.Text</td>
                     <td>@blog.Date</td>
+
+                    @if (authState.User.Identity.IsAuthenticated)
+                    {
+                        <button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(blog))">  edit  </button>
+                        <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(blog.BlogId))">  delete  </button>
+                    }
                 </tr>
 
             }
         </tbody>
     </table>
+
+    @if (bVisible)
+    {
+
+        <EditForm Model="@Blog">
+
+            <!--Title-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">Title:</label>
+                <div class="col-sm-3">
+                    <InputText class="form-control"
+                               @bind-Value="@Blog.Title" />
+                    @*<ValidationMessage For="@blogEntry.Title"/>*@
+                </div>
+            </div>
+
+            <!--Text-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">Text:</label>
+                <div class="col-sm-3">
+                    <InputText class="form-control"
+                               @bind-Value="@Blog.Text" />
+                    @*<ValidationMessage For="@blogEntry.Title"/>*@
+                </div>
+            </div>
+
+            <!--DateAdded-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">Date:</label>
+                <div class="col-sm-3">
+                    <InputDate class="form-control"
+                               @bind-Value="@Blog.Date" />
+                    @*<ValidationMessage For="@blogEntry.Title"/>*@
+                </div>
+            </div>
+
+            <!--Checkbox For Assignment Specs-->
+            <div class="form-group row mb1">
+                <label class="col-sm-3 col-form-label">Checkbox:</label>
+                <div class="col-sm-3">
+                    <InputCheckbox class="form-control"
+                                   @bind-Value="@Blog.ExampleCheckbox" />
+                    @*<ValidationMessage For="@blogEntry.Title"/>*@
+                </div>
+                @if (Blog.ExampleCheckbox == true)
+                {
+                    <p>show some text</p>
+                }
+            </div>
+
+
+            @*Buttons
+            <div class="form-group">
+                Add Contact Info
+                <button type="submit" class="btn btn-primary" @onclick="AddNewBlog">Add</button>
+                Save Changes
+                <button type="submit" class="btn btn-primary" @onclick="UpdateContacts">Save</button>
+                Cancel
+                <button class="btn btn-light" @onclick="@Cancel">Cancel</button>
+            </div>*@
+
+
+               <button class="btn-xs btn-success" @onclick="@UpdateOnValidSubmit">  update  </button>
+            <button class="btn-xs btn-light" @onclick="@Cancel"> close </button>
+  
+
+
+
+        </EditForm>
+    }
 
 }
 
@@ -49,18 +126,66 @@ else
 
     [Parameter]
     public string Title { get; set; }
-
+    [Inject]
+    public IJSRuntime Js { get; set; }  // used for Javascript confirm delete dialog
+    private bool bVisible = false;
     private AuthenticationState authState;
+
+    public BlogEntry Blog { get; set; } = new BlogEntry();
+
     List<BlogEntry> BlogList = new List<BlogEntry>();
+
+
 
     protected async override Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         BlogList = await _blogService.GetBlogInfo();
+    }
+
+
+    private async Task OnEditClick(BlogEntry blog)
+    {
+        Console.WriteLine($"OnEdit Called for contact {blog.Title}");
+        this.Blog = blog;
+        //this.education = eduSelected;
+
+        bVisible = true;
+        StateHasChanged();
+    }
+
+    private async Task UpdateOnValidSubmit()
+    {
+        Console.WriteLine("Update called DisplayBlog.razor");
+        await _blogService.UpdateBlog(Blog);
+        StateHasChanged();
+        //bVisible = false;
+    }
+
+
+    private async Task DeleteOnValidSubmit(int id)
+    {
+        Console.WriteLine("Delete called");
+        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delet{Blog.Title} ?");
+        if (confirmed)
+        {
+            await _blogService.DeleteBlog(id);
+            StateHasChanged();
+        }
 
     }
 
+
+    private void Cancel()
+    {
+        bVisible = false;
+    }
+
+
+    private void NavToAddBlog()
+    {
+        urlNavigationManager.NavigateTo("addblog");
+    }
 
 }

@@ -10,5 +10,7 @@ namespace WebsitePortfolioJTorres.Shared.Interfaces
     {
         Task<List<BlogEntry>> GetBlogInfo();
         Task AddBlog(BlogEntry addedBlog);
+        Task<BlogEntry> UpdateBlog(BlogEntry updatedBlog);
+        Task DeleteBlog(int id);
     }
 }

@@ -25,6 +25,11 @@ namespace WebsitePortfolioJTorres.Client.Services
             Console.WriteLine("AddBlog called from BlogService.cs");
             await httpClient.PostAsJsonAsync("api/blog", addedBlog);
         }
+        //DELETE
+        public async Task DeleteBlog(int id)
+        {
+            await httpClient.DeleteAsync($"api/blog/{id}");
+        }
 
         //GET
         public async Task<List<BlogEntry>> GetBlogInfo()
@@ -32,6 +37,15 @@ namespace WebsitePortfolioJTorres.Client.Services
             Console.WriteLine("GetBlogEntries called from BlogService.cs");
             var blogInfo = await this.httpClient.GetFromJsonAsync<List<BlogEntry>>("api/blog");
             return blogInfo;
+        }
+
+        //UPDATE
+        public async Task<BlogEntry> UpdateBlog(BlogEntry blogUpdated)
+        {
+            Console.WriteLine("Update called from resumeservice");
+            var blogInfo = await httpClient.PutAsJsonAsync<BlogEntry>("api/blog", blogUpdated);
+            return blogUpdated;
+            //return await httpClient.PutAsJsonAsync<Education>("api/experience", updatedEdu);
         }
     }
 }

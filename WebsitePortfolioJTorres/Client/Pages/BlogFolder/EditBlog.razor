@@ -1,4 +1,4 @@
-﻿@page "/editblog"
+﻿@page "/addblog"
 @using Microsoft.AspNetCore.Authorization
 @using WebsitePortfolioJTorres.Shared.Models
 @using WebsitePortfolioJTorres.Shared.Interfaces;
@@ -57,15 +57,16 @@
     </div>
 
 
-    <!--Buttons-->
+    @*Buttons*@
     <div class="form-group">
-        <!--Add Contact Info-->
+        @*Add Blog*@
         <button type="submit" class="btn btn-primary" @onclick="AddNewBlog">Add</button>
-        <!--Save Changes-->
-        <button type="submit" class="btn btn-primary" @onclick="UpdateContacts">Save</button>
-        <!--Cancel-->
+        @*Save Changes
+        <button type="submit" class="btn btn-primary" @onclick="UpdateContacts">Save</button>*@
+        @*Cancel*@
         <button class="btn btn-light" @onclick="@Cancel">Cancel</button>
     </div>
+
 
 
 </EditForm>
@@ -78,11 +79,6 @@
         Console.WriteLine("AddNewBlog called from EditBlog.razor");
         await _blogService.AddBlog(blogEntry);
         StateHasChanged();
-    }
-
-    protected async Task UpdateContacts()
-    {
-        Console.WriteLine("Update Called from EditContacts.razor");
     }
 
 

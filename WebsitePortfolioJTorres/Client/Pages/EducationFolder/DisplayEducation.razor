@@ -110,7 +110,8 @@ else
 
     [Parameter]
     public string Title { get; set; }
-
+    [Inject]
+    public IJSRuntime Js { get; set; }  // used for Javascript confirm delete dialog
     private bool bVisible = false;
     private AuthenticationState authState;
 
@@ -151,8 +152,13 @@ else
     private async Task DeleteOnValidSubmit(int id)
     {
         Console.WriteLine("Delete called");
-        await _resumeService.DeleteEducation(id);
-        StateHasChanged();
+        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delet{ResumeField.MyEducation.SchoolName} ?");
+        if (confirmed)
+        {
+            await _resumeService.DeleteEducation(id);
+            StateHasChanged();
+        }
+
     }
 
 
@@ -166,5 +172,8 @@ else
     {
         _urlNavigationManager.NavigateTo("addedu");
     }
+
+
+
 
 }

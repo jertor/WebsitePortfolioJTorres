@@ -31,12 +31,48 @@ namespace WebsitePortfolioJTorres.Server.Controllers
 
         //POST: api/blog 
         [HttpPost] //AddsNewBlogEntry
-        public async Task<ActionResult<ContactInfo>> AddNewBlog(BlogEntry addBlog)
+        public async Task<ActionResult<ContactInfo>> AddBlogEntry(BlogEntry addBlog)
         {
             db.BlogEntries.Add(addBlog);
             await db.SaveChangesAsync();
 
             return CreatedAtAction("GetContacts", new { id = addBlog.BlogId }, addBlog);
+        }
+
+
+        //PUT: api/blog
+        [HttpPut]
+        public async Task<ActionResult<Education>> UpdateBlogEntry(BlogEntry blogUpdated)
+        {
+            db.Entry(blogUpdated).State = EntityState.Modified;
+
+            var eduToUpdate = await GetBlogEntries();
+            try
+            {
+                await db.SaveChangesAsync();
+
+                return await UpdateBlogEntry(blogUpdated);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data");
+            }
+        }
+
+        //DELETE
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<BlogEntry>> DeleteBlogEntry(int id)
+        {
+            var blog = await db.BlogEntries.FindAsync(id);
+            if (blog == null)
+            {
+                return NotFound();
+            }
+
+            db.BlogEntries.Remove(blog);
+            await db.SaveChangesAsync();
+
+            return blog;
         }
     }
 }

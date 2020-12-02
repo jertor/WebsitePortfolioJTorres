@@ -58,15 +58,7 @@ namespace WebsitePortfolioJTorres.Server.Controllers
             }
         }
 
-
-
-        //[HttpDelete("id")]
-        //public async Task<ActionResult> DeleteEducation(int id) 
-        //{
-        //    var edu = new Education(Eduid = id);
-        //}
-
-
+        //DELETE
         [HttpDelete("{id}")]
         public async Task<ActionResult<Education>> DeleteEducation(int id)
         {
