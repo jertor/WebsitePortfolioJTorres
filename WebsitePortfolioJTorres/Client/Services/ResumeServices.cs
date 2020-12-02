@@ -35,6 +35,7 @@ namespace WebsitePortfolioJTorres.Client.Services
             await httpClient.PostAsJsonAsync("api/experience", addedExp);
         }
 
+
         //GET
         public async Task<List<ContactInfo>> GetContactInfo()
         {
@@ -69,9 +70,12 @@ namespace WebsitePortfolioJTorres.Client.Services
         }
 
 
-        //Delete
+        //DELETE
+        public async Task DeleteEducation(int id) 
+        {
+            await httpClient.DeleteAsync($"api/education/{id}");
 
-
+        }
 
     }
 }

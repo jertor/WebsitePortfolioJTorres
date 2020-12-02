@@ -57,5 +57,30 @@ namespace WebsitePortfolioJTorres.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data");
             }
         }
+
+
+
+        //[HttpDelete("id")]
+        //public async Task<ActionResult> DeleteEducation(int id) 
+        //{
+        //    var edu = new Education(Eduid = id);
+        //}
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Education>> DeleteEducation(int id)
+        {
+            var education = await db.Degrees.FindAsync(id);
+            if (education == null)
+            {
+                return NotFound();
+            }
+
+            db.Degrees.Remove(education);
+            await db.SaveChangesAsync();
+
+            return education;
+        }
+
     }
 }
