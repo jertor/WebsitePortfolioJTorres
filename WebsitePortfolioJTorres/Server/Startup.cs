@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using WebsitePortfolioJTorres.Server.Data;
 using WebsitePortfolioJTorres.Server.Models;
+using WebsitePortfolioJTorres.Server.Hubs;
 
 namespace WebsitePortfolioJTorres.Server
 {
@@ -41,14 +42,20 @@ namespace WebsitePortfolioJTorres.Server
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
-
+            services.AddSignalR(); // Added for SignalR ChatHub
             services.AddControllersWithViews();
+            services.AddResponseCompression(Opts =>
+            {
+                Opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            }); //Added For SignalR ChatHub
             services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseResponseCompression(); //Added for SignalR ChatHub
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -76,6 +83,7 @@ namespace WebsitePortfolioJTorres.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chathub"); //Added for SignalR Chathub ("/chathub") is a URL
                 endpoints.MapFallbackToFile("index.html");
             });
         }

@@ -1,0 +1,98 @@
+﻿@page "/chat"
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavigationManager
+@implements IDisposable
+
+
+<div class="form-group">
+    <label>
+        User:
+        <input @bind="userInput" />
+    </label>
+</div>
+
+<div class="form-group">
+    <label>
+        Message:
+        <input @bind="messageInput" size="50" />
+    </label>
+</div>
+
+<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+
+<!--Display Messages-->
+<hr />
+<ul id="messagesList">
+    @foreach (var message in messages)
+    {
+        <li>@message</li>
+    }
+</ul>
+
+
+
+@code
+{
+    private HubConnection hubConnection;
+    private List<string> messages = new List<string>();
+    private string userInput;
+    private string messageInput;
+
+    //Property
+    public bool IsConnected
+    {
+        get
+        {
+            return hubConnection.State == HubConnectionState.Connected; //Checks to make sure the Hub is connected
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //talks to the chathub that is located in Startup.cs
+        //Builder is a patter that allows you to keep adding things with the . operator
+        //hubConnection creates a connection with chathub
+        //Todo:
+        //  Create functionaility to close the connection after a certain amount of time
+        //  Create a button to create the connection
+        //  Create the hubConnection and attach it to a button @onclick event
+        hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/chathub")).Build();
+
+        //string, string represents the user, message from the ChatHub.cs (it defines the structure using parameters)
+        //when we get a call to ReceiveMessage execute the function
+        //hubConnection.On<string, string>("ReceiveMessage", HandleReceiveMessage);
+
+        //LAMDA VERSION of RecieveMessage function
+        hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        {
+            var encodedMsg = $"{user}:{message}";
+            messages.Add(encodedMsg);
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+
+    }
+
+    //USING METHOD instead of LAMBDA EXPRESSION
+    //private void HandleReceiveMessage(string user, string message)
+    //{
+    //    var encodedMsg = $"{user}:{message}";
+    //    messages.Add(encodedMsg);
+    //    StateHasChanged();
+    //}
+
+    //SendMessage References line 11 of Chathub.cs
+    private Task Send()
+    {
+        return hubConnection.SendAsync("SendMessage", userInput, messageInput);
+    }
+
+
+
+
+    public void Dispose()
+    {
+
+    }
+}
