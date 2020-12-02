@@ -31,6 +31,7 @@ namespace WebsitePortfolioJTorres.Client.Services
             return projInfo;
         }
 
+        
         public async Task<string> UploadFileImage(MultipartFormDataContent content)
         {
             var postResult = await httpClient.PostAsync("api/MyProjects", content);

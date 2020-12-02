@@ -19,7 +19,7 @@ namespace WebsitePortfolioJTorres.Server.Controllers
             try
             {
                 var file = Request.Form.Files[0];
-                var folderName = Path.Combine("StaticFiles", "Images"); // creates the folder name
+                var folderName = Path.Combine("StaticFiles", "images"); // creates the folder name
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName); // creates a relative path(makes the filename dynamic to work anywhere)
                 //Checks to make sure the file isn't empty
                 if (file.Length > 0)

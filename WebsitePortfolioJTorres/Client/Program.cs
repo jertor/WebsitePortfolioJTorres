@@ -30,6 +30,7 @@ namespace WebsitePortfolioJTorres.Client
             builder.Services.AddApiAuthorization();
 
             //My Services
+            //builder.Services.AddTransient<IServiceName, HardcodedMockService>(); //Testing service
             builder.Services.AddTransient<IResumeService, ResumeServices>();
             builder.Services.AddTransient<IBlogService, BlogServices>();
             builder.Services.AddTransient<IProjectService, ProjectServices>();
