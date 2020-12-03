@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using WebsitePortfolioJTorres.Shared.Models
-@using WebsitePortfolioJTorres.Shared.Interfaces;
+@using WebsitePortfolioJTorres.Shared.Interfaces
+@using WebsitePortfolioJTorres.Client.Services
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager _urlNavigationManager
 @inject IResumeService _resumeService
+@inject PublicClient PublicClient
 <!--Header-->
 <h3>@Title</h3>
 
@@ -126,7 +128,8 @@ else
     {
         await base.OnInitializedAsync();
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        ContactList = await _resumeService.GetContactInfo();
+        //ContactList = await _resumeService.GetContactInfo();
+        ContactList = await PublicClient.Client.GetFromJsonAsync<List<ContactInfo>>("api/contacts");
     }
 
 

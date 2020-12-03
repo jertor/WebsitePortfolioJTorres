@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using WebsitePortfolioJTorres.Shared.Models
-@using WebsitePortfolioJTorres.Shared.Interfaces;
+@using WebsitePortfolioJTorres.Shared.Interfaces
+@using WebsitePortfolioJTorres.Client.Services
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager urlNavigationManager
 @inject IProjectService _projectService
+@inject PublicClient PublicClient
 
 <!--Header-->
 <h4>@Title</h4>
@@ -60,6 +62,11 @@ else
     {
         await base.OnInitializedAsync();
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        ProjList = await _projectService.GetProjects();
+        //ProjList = await _projectService.GetProjects();
+
+        //var result = PublicClient.Client.GetFromJsonAsync<List<Project>>("api/myprojects");
+        //Used for Unauthorized Viewing
+        ProjList = await PublicClient.Client.GetFromJsonAsync<List<Project>>("api/myprojects");
+
     }
 }

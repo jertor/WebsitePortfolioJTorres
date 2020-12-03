@@ -1,9 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using WebsitePortfolioJTorres.Shared.Models
-@using WebsitePortfolioJTorres.Shared.Interfaces;
+@using WebsitePortfolioJTorres.Shared.Interfaces
+@using WebsitePortfolioJTorres.Client.Services
+@inject PublicClient PublicClient
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager _urlNavigationManager
 @inject IResumeService _resumeService
+
 <!--Header-->
 <h3>@Title</h3>
 
@@ -27,9 +30,9 @@ else
                             <a href="/editedu"> add </a>
                         </th>*@
                     <th><button type="submit" class="btn-sm btn-primary" @onclick="NavToAddEducation">Add</button></th>
-                    
+
                 }
-                
+
             </tr>
         </thead>
         <tbody>
@@ -138,7 +141,8 @@ else
     {
         await base.OnInitializedAsync();
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        EduList = await _resumeService.GetEducationInfo();
+        //EduList = await _resumeService.GetEducationInfo();
+        EduList = await PublicClient.Client.GetFromJsonAsync<List<Education>>("api/education");
     }
 
 

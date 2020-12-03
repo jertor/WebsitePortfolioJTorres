@@ -24,6 +24,12 @@ namespace WebsitePortfolioJTorres.Client
             builder.Services.AddHttpClient("WebsitePortfolioJTorres.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
+            //Custom HttpClient used for unauthorized access
+            //builder.Services.AddHttpClient("WebsitePortfolioJTorres.PublicServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
+            builder.Services.AddHttpClient<PublicClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
+
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("WebsitePortfolioJTorres.ServerAPI"));
 
