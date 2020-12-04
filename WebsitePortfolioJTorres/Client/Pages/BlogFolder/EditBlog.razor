@@ -79,6 +79,7 @@
         Console.WriteLine("AddNewBlog called from EditBlog.razor");
         await _blogService.AddBlog(blogEntry);
         StateHasChanged();
+        _urlNavigationManager.NavigateTo("/blog");
     }
 
 

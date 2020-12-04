@@ -25,10 +25,9 @@ else
                 <th>End Date</th>
                 @if (authState.User.Identity.IsAuthenticated)
                 {
-                    @*<th>
-                            <a href="/editedu"> add </a>
-                        </th>*@
-                    <button type="submit" class="btn-sm btn-primary" @onclick="NavToAddExperience">Add</button>
+                    <th>
+                        <button type="submit" style="color:black" class="btn btn-primary" @onclick="NavToAddExperience"><b>  ADD NEW  </b></button>
+                    </th>
                 }
             </tr>
         </thead>
@@ -49,9 +48,25 @@ else
                     }
                     @if (authState.User.Identity.IsAuthenticated)
                     {
-                        @*<button class="btn-xs btn-success" @onclick="@(() => OnEditClick(school))">  add  </button>*@
-                        <button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(exp))">  edit  </button>
-                        <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(exp.ExpId))">  delete  </button>
+                        <td>
+                            <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" style="color:black">Modify</button>
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <button class="btn-xs btn-success" @onclick="@(() => OnEditClick(exp))">  EDIT  </button>
+                                        </li>
+                                        <li>
+                                            <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(exp.ExpId))">DELETE</button>
+                                        </li>
+                                    </ul>
+
+                            </div>
+                            @*<button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(school))">  edit  </button>
+                            <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(school.EduId))">  delete  </button>*@
+                        </td>
                     }
 
                 </tr>

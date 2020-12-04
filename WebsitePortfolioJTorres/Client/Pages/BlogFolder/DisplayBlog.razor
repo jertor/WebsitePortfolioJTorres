@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Authorization
+﻿@page "/blogpage"
+@using Microsoft.AspNetCore.Authorization
 @using WebsitePortfolioJTorres.Shared.Models
 @using WebsitePortfolioJTorres.Shared.Interfaces
 @using WebsitePortfolioJTorres.Client.Services
@@ -6,121 +7,154 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager urlNavigationManager
 @inject IBlogService _blogService
-<!--Header-->
-<h3>Blog Entries</h3>
 
-<!--Body-->
-@if (BlogList == null)
-{
-    <p>Loading Blog Entries</p>
-}
-else
-{
-    <table class="table table-dark">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Text</th>
-                <th>Date Added</th>
-                @if (authState.User.Identity.IsAuthenticated)
+
+
+<!-- Services-->
+    <section class="page-section" id="blogpage">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Blog Entries</h2>
+
+                @*Body*@
+                @if (BlogList == null)
                 {
-                    <button type="submit" class="btn-sm btn-primary" @onclick="NavToAddBlog">Add</button>
-                    @*<th>
-                            <a href="/editblog"> edit </a>
-                        </th>*@
+                    <p>Loading Blog Entries</p>
                 }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (BlogEntry blog in BlogList)
-            {
-                <tr>
-                    <td>@blog.Title</td>
-                    <td>@blog.Text</td>
-                    <td>@blog.Date</td>
+                else
+                {
+                    <table class="table table-dark">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Text</th>
+                                <th>Date Added</th>
+                                @if (authState.User.Identity.IsAuthenticated)
+                                {
+                                    <th>  </th>
+                                    <th><button type="submit" class="btn-sm btn-primary float-md-right" @onclick="NavToAddBlog">Add</button></th>
+                                    @*<button type="submit" class="btn-sm btn-primary" @onclick="NavToAddBlog">Add</button>
+                            <th>
+                                    <a href="/editblog"> edit </a>
+                                </th>*@
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (BlogEntry blog in BlogList)
+                            {
+                                <tr>
+                                    <td>@blog.Title</td>
+                                    <td>@blog.Text</td>
+                                    <td>@blog.Date</td>
 
-                    @if (authState.User.Identity.IsAuthenticated)
+                                    @if (authState.User.Identity.IsAuthenticated)
+                                    {
+                                        <td><button class="btn-xs btn-success float-md-right" @onclick="@(()=>OnEditClick(blog))">  edit  </button></td>
+                                        <td><button class="btn-xs btn-danger float-md-right" @onclick="@(() => DeleteOnValidSubmit(blog.BlogId))">  delete  </button> </td>
+                                    }
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+
+                    @if (bVisible)
                     {
-                        <button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(blog))">  edit  </button>
-                        <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(blog.BlogId))">  delete  </button>
+
+                        <EditForm Model="@Blog">
+
+                            @*Title*@
+                            <div class="form-group row mb1">
+                                <label class="col-sm-3 col-form-label">Title:</label>
+                                <div class="col-sm-3">
+                                    <InputText class="form-control"
+                                               @bind-Value="@Blog.Title" />
+                                    @*<ValidationMessage For="@Blog.Title"/>*@
+                                </div>
+                            </div>
+
+                            @*Text*@
+                            <div class="form-group row mb1">
+                                <label class="col-sm-3 col-form-label">Text:</label>
+                                <div class="col-sm-3">
+                                    <InputText class="form-control"
+                                               @bind-Value="@Blog.Text" />
+                                    @*<ValidationMessage For="@Blog.Text"/>*@
+                                </div>
+                            </div>
+
+                            @*DateAdded*@
+                            <div class="form-group row mb1">
+                                <label class="col-sm-3 col-form-label">Date:</label>
+                                <div class="col-sm-3">
+                                    <InputDate class="form-control"
+                                               @bind-Value="@Blog.Date" />
+                                    @*<ValidationMessage For="@Blog.Date"/>*@
+                                </div>
+                            </div>
+
+                            @*Checkbox For Assignment Specs*@
+                            <div class="form-group row mb1">
+                                <label class="col-sm-3 col-form-label">Checkbox:</label>
+                                <div class="col-sm-3">
+                                    <InputCheckbox class="form-control"
+                                                   @bind-Value="@Blog.ExampleCheckbox" />
+                                    @*<ValidationMessage For="@Blog.ExampleCheckbox"/>*@
+                                </div>
+                                @if (Blog.ExampleCheckbox == true)
+                                {
+                                    <p>show some text</p>
+                                }
+                            </div>
+
+
+                            @*Buttons*@
+                            <button class="btn-xs btn-success" @onclick="@UpdateOnValidSubmit">  update  </button>
+                            <button class="btn-xs btn-light" @onclick="@Cancel"> close </button>
+
+                        </EditForm>
                     }
-                </tr>
 
-            }
-        </tbody>
-    </table>
-
-    @if (bVisible)
-    {
-
-        <EditForm Model="@Blog">
-
-            <!--Title-->
-            <div class="form-group row mb1">
-                <label class="col-sm-3 col-form-label">Title:</label>
-                <div class="col-sm-3">
-                    <InputText class="form-control"
-                               @bind-Value="@Blog.Title" />
-                    @*<ValidationMessage For="@blogEntry.Title"/>*@
-                </div>
-            </div>
-
-            <!--Text-->
-            <div class="form-group row mb1">
-                <label class="col-sm-3 col-form-label">Text:</label>
-                <div class="col-sm-3">
-                    <InputText class="form-control"
-                               @bind-Value="@Blog.Text" />
-                    @*<ValidationMessage For="@blogEntry.Title"/>*@
-                </div>
-            </div>
-
-            <!--DateAdded-->
-            <div class="form-group row mb1">
-                <label class="col-sm-3 col-form-label">Date:</label>
-                <div class="col-sm-3">
-                    <InputDate class="form-control"
-                               @bind-Value="@Blog.Date" />
-                    @*<ValidationMessage For="@blogEntry.Title"/>*@
-                </div>
-            </div>
-
-            <!--Checkbox For Assignment Specs-->
-            <div class="form-group row mb1">
-                <label class="col-sm-3 col-form-label">Checkbox:</label>
-                <div class="col-sm-3">
-                    <InputCheckbox class="form-control"
-                                   @bind-Value="@Blog.ExampleCheckbox" />
-                    @*<ValidationMessage For="@blogEntry.Title"/>*@
-                </div>
-                @if (Blog.ExampleCheckbox == true)
-                {
-                    <p>show some text</p>
                 }
+
+
             </div>
-
-
-            @*Buttons
-            <div class="form-group">
-                Add Contact Info
-                <button type="submit" class="btn btn-primary" @onclick="AddNewBlog">Add</button>
-                Save Changes
-                <button type="submit" class="btn btn-primary" @onclick="UpdateContacts">Save</button>
-                Cancel
-                <button class="btn btn-light" @onclick="@Cancel">Cancel</button>
+            @*<div class="row text-center">
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="my-3">E-Commerce</h4>
+                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="my-3">Responsive Design</h4>
+                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                        <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="my-3">Web Security</h4>
+                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                </div>
             </div>*@
-
-
-               <button class="btn-xs btn-success" @onclick="@UpdateOnValidSubmit">  update  </button>
-            <button class="btn-xs btn-light" @onclick="@Cancel"> close </button>
-  
+        </div>
+    </section>
 
 
 
-        </EditForm>
-    }
 
-}
+
+
+
 
 
 
@@ -143,8 +177,7 @@ else
     {
         await base.OnInitializedAsync();
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        BlogList = await PublicClient.Client.GetFromJsonAsync<List<BlogEntry>>("api/blog");
-        //BlogList = await _blogService.GetBlogInfo();
+        BlogList = await PublicClient.Client.GetFromJsonAsync<List<BlogEntry>>("api/blog"); //PublicClient class created to display to non authorized users
     }
 
 
@@ -152,8 +185,6 @@ else
     {
         Console.WriteLine($"OnEdit Called for contact {blog.Title}");
         this.Blog = blog;
-        //this.education = eduSelected;
-
         bVisible = true;
         StateHasChanged();
     }

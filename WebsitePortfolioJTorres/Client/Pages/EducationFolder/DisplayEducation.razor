@@ -21,15 +21,18 @@ else
         <thead class="thead-light">
             <tr>
                 <th>School Name</th>
-                @*<th>Major</th>*@
+                <th>Major</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+
                 @if (authState.User.Identity.IsAuthenticated)
                 {
-                    @*<th>
-                            <a href="/editedu"> add </a>
-                        </th>*@
-                    <th><button type="submit" class="btn-sm btn-primary" @onclick="NavToAddEducation">Add</button></th>
+                    <th>
+                        <button type="submit" style="color:black" class="btn btn-primary" @onclick="NavToAddEducation"><b>  ADD NEW  </b></button>
+                    </th>
+
+                    //using Links to navigate
+                    @*<th><a href="/editedu"> add </a></th>*@
 
                 }
 
@@ -53,8 +56,17 @@ else
                     @if (authState.User.Identity.IsAuthenticated)
                     {
                         <td>
-                            <button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(school))">  edit  </button>
-                            <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(school.EduId))">  delete  </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary" style="color:black">Modify</button>
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><button class="btn-xs btn-success" @onclick="@(() => OnEditClick(school))">  EDIT  </button></li>
+                                    <li><button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(school.EduId))">DELETE</button></li>
+                                </ul>
+
+                            </div>
                         </td>
                     }
 

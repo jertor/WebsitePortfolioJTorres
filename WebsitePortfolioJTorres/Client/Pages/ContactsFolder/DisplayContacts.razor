@@ -19,35 +19,45 @@ else
     <table class="table table-sm">
         <thead class="thead-light">
             <tr>
-                <th>School Name</th>
-                @*<th>Major</th>*@
-                <th>Start Date</th>
-                <th>End Date</th>
+                <th>Name</th>
+                <th>Number</th>
+                <th>Email</th>
+                <th>Address</th>
                 @if (authState.User.Identity.IsAuthenticated)
                 {
-                    @*<th>
-                            <a href="/editedu"> add </a>
-                        </th>*@
-                    <th><button type="submit" class="btn-sm btn-primary" @onclick="NavToAddContact">Add</button></th>
+                    <th>
+                        <button type="submit" style="color:black" class="btn btn-primary" @onclick="NavToAddContact"><b>  ADD NEW  </b></button>
+                    </th>
                 }
             </tr>
         </thead>
         <tbody>
             @foreach(ContactInfo contact in ContactList)
             {
-                <tr>
-                    <td>@contact.Name</td>
-                    @*<th>@school.Major</th>*@
-                    <td>@contact.Phone</td>
-                    <td>@contact.Email</td>
-                    <td>@contact.Address</td>
-                    @if (authState.User.Identity.IsAuthenticated)
-                    {
-                        <button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(contact))">  edit  </button>
-                        <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(contact.ContactId))">  delete  </button>
-                    }
+            <tr>
+                <td>@contact.Name</td>
+                @*<th>@school.Major</th>*@
+                <td>@contact.Phone</td>
+                <td>@contact.Email</td>
+                <td>@contact.Address</td>
+                @if (authState.User.Identity.IsAuthenticated)
+                {
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" style="color:black">Modify</button>
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><button class="btn-xs btn-success" @onclick="@(() => OnEditClick(contact))">  EDIT  </button></li>
+                                <li><button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(contact.ContactId))">DELETE</button></li>
+                            </ul>
 
-                </tr>
+                        </div>
+                    </td>
+                }
+
+            </tr>
             }
         </tbody>
     </table>

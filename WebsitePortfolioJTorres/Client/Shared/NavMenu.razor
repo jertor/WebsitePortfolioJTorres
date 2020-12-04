@@ -1,52 +1,92 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">WebsitePortfolioJTorres</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿
+@*<div class="sidebar">
+        <NavMenu />
+    </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="resume">
-                <span class="oi oi-document" aria-hidden="true"></span> Resume
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="blog">
-                <span class="oi oi-book" aria-hidden="true"></span> Blog
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="projects">
-                <span class="oi oi-code" aria-hidden="true"></span> Projects
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="chat">
-                <span class="oi oi-chat" aria-hidden="true"></span> Chat
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="email">
-                <span class="oi oi-envelope-closed" aria-hidden="true"></span> Email Me
-            </NavLink>
-        </li>
-    </ul>
-</div>
+    <div class="main">
+        <div class="top-row px-4 auth">
+            <LoginDisplay />
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
 
-@code {
-    private bool collapseNavMenu = true;
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>*@
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+<!-- Navigation-->
+@*<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="assets/img/navbar-logo.svg" alt="" /></a>
 
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars ml-1"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav text-uppercase ml-auto">*@
+@*<li><button type="submit" class="btn btn-link" @onclick="ResumePage">Resume</button></li>
+    <li><button type="submit" class="btn btn-link" @onclick="BlogPage">Blog Page</button></li>*@
+@*<li class="nav-item"><a class="nav-link js-scroll-trigger" href="#services">Services</a></li>
+    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a></li>
+    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#team">Team</a></li>
+    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>*@
+@*</ul>
+            </div>
+        </div>
+    </nav>*@
+
+
+@*<div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" href="">WebsitePortfolioJTorres</a>
+        <button class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="resume">
+                    <span class="oi oi-document" aria-hidden="true"></span> Resume
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="blog">
+                    <span class="oi oi-book" aria-hidden="true"></span> Blog
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="projects">
+                    <span class="oi oi-code" aria-hidden="true"></span> Projects
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="chat">
+                    <span class="oi oi-chat" aria-hidden="true"></span> Chat
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="email">
+                    <span class="oi oi-envelope-closed" aria-hidden="true"></span> Email Me
+                </NavLink>
+            </li>
+        </ul>
+    </div>
+
+    @code {
+        private bool collapseNavMenu = true;
+
+        private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+        private void ToggleNavMenu()
+        {
+            collapseNavMenu = !collapseNavMenu;
+        }
+    }*@
