@@ -8,7 +8,7 @@ namespace WebsitePortfolioJTorres.Shared.Interfaces
 {
     public interface IBlogService
     {
-        Task<List<BlogEntry>> GetBlogInfo();
+        //Task<List<BlogEntry>> GetBlogInfo();
         Task AddBlog(BlogEntry addedBlog);
         Task<BlogEntry> UpdateBlog(BlogEntry updatedBlog);
         Task DeleteBlog(int id);

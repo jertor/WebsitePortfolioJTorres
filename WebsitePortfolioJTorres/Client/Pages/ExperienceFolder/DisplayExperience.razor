@@ -129,7 +129,7 @@ else
         await base.OnInitializedAsync();
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         //ExpList = await _resumeService.GetExperienceInfo(); // Previous Get was removed from resume service and added to Public Client
-        ExpList = await PublicClient.Client.GetFromJsonAsync<List<Experience>>("api/experience"); // Added for PublicClient to view as unauthorized user
+        ExpList = await PublicClient.Client.GetFromJsonAsync<List<Experience>>("api/experience"); // Used to view my experience without being logged in
     }
 
 
@@ -176,7 +176,7 @@ else
         _urlNavigationManager.NavigateTo("addexp");
     }
 
-
+    
 
 
 }

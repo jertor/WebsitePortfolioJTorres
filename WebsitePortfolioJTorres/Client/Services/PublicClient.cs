@@ -23,6 +23,7 @@ namespace WebsitePortfolioJTorres.Client.Services
         //    return result;
         //}
 
+        //GET
         public async Task<List<ContactInfo>> GetContactInfo()
         {
             {
@@ -44,6 +45,16 @@ namespace WebsitePortfolioJTorres.Client.Services
             var expInfo = await this.Client.GetFromJsonAsync<List<Experience>>("api/experience");
             return expInfo;
         }
+
+        
+        public async Task<List<BlogEntry>> GetBlogInfo()
+        {
+            Console.WriteLine("GetBlogEntries called from BlogService.cs");
+            var blogInfo = await this.Client.GetFromJsonAsync<List<BlogEntry>>("api/blog");
+            return blogInfo;
+        }
+
+
 
     }
 }

@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using WebsitePortfolioJTorres.Shared.Models
-@using WebsitePortfolioJTorres.Shared.Interfaces;
+@using WebsitePortfolioJTorres.Shared.Interfaces
+@using WebsitePortfolioJTorres.Client.Services
+@inject PublicClient PublicClient
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager urlNavigationManager
 @inject IBlogService _blogService
@@ -141,7 +143,8 @@ else
     {
         await base.OnInitializedAsync();
         authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        BlogList = await _blogService.GetBlogInfo();
+        BlogList = await PublicClient.Client.GetFromJsonAsync<List<BlogEntry>>("api/blog");
+        //BlogList = await _blogService.GetBlogInfo();
     }
 
 

@@ -31,13 +31,13 @@ namespace WebsitePortfolioJTorres.Client.Services
             await httpClient.DeleteAsync($"api/blog/{id}");
         }
 
-        //GET
-        public async Task<List<BlogEntry>> GetBlogInfo()
-        {
-            Console.WriteLine("GetBlogEntries called from BlogService.cs");
-            var blogInfo = await this.httpClient.GetFromJsonAsync<List<BlogEntry>>("api/blog");
-            return blogInfo;
-        }
+        ////GET
+        //public async Task<List<BlogEntry>> GetBlogInfo()
+        //{
+        //    Console.WriteLine("GetBlogEntries called from BlogService.cs");
+        //    var blogInfo = await this.httpClient.GetFromJsonAsync<List<BlogEntry>>("api/blog");
+        //    return blogInfo;
+        //}
 
         //UPDATE
         public async Task<BlogEntry> UpdateBlog(BlogEntry blogUpdated)
