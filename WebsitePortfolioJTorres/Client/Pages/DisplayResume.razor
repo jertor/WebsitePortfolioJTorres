@@ -6,9 +6,7 @@
 @using WebsitePortfolioJTorres.Client.Pages.ContactsFolder
 @using WebsitePortfolioJTorres.Client.Pages.EducationFolder
 @using WebsitePortfolioJTorres.Client.Pages.ExperienceFolder
-
-
-
+@inject NavigationManager urlNavigationManager
 
 
 
@@ -80,6 +78,7 @@
 <!--Resume-->
 @*Header*@
 <h2 style="text-align:center; color:black">My Resume</h2>
+<button type="submit" class="alert-info" style="padding-right:inherit" @onclick="ReturnHome">Return Home</button>
 <h4>About Me</h4>
 <div>
     Now, this is a story all about how
@@ -102,5 +101,11 @@
 
 
 @code {
+
+    private void ReturnHome()
+    {
+        urlNavigationManager.NavigateTo("/");
+        StateHasChanged();
+    }
 
 }
