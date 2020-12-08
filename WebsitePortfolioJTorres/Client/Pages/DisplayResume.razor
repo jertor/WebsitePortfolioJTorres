@@ -11,7 +11,7 @@
 
 
 <!-- Add Project and Coding knowledge timeline -->
-<section class="page-section" id="about">
+@*<section class="page-section" id="about">
     <div class="container">
         <div class="text-center">
             <h2 class="section-heading text-uppercase">About</h2>
@@ -71,27 +71,38 @@
             </li>
         </ul>
     </div>
-</section>
+</section>*@
 
 
 
 <!--Resume-->
 @*Header*@
-<h2 style="text-align:center; color:black">My Resume</h2>
-<button type="submit" class="alert-info" style="padding-right:inherit" @onclick="ReturnHome">Return Home</button>
-<h4>About Me</h4>
-<div>
-    Now, this is a story all about how
-    My life got flipped-turned upside down
-    And I'd like to take a minute
-    To sit right there
-    I'll tell you how I became the prince of a town called Bel Air
-</div>
+<header style="background-color:black">
+    <button type="submit" class="btn btn-link" style="float:right" @onclick="ReturnHome"><b>Return Home</b></button>
+    <br /><br />
+    <h1 style="text-align:center; color:#fed136; border-bottom-style:groove">
+        My Resume
+    </h1>
+</header>
 
-<!--Body-->
-<DisplayContacts Title="Contact Me" />
-<DisplayEducation Title="Education" />
-<DisplayExperience Title="Experience" />
+<body>
+    @*<h4>About Me</h4>
+        <div>
+            Now, this is a story all about how
+            My life got flipped-turned upside down
+            And I'd like to take a minute
+            To sit right there
+            I'll tell you how I became the prince of a town called Bel Air
+        </div>*@
+    <!--Body-->
+    <DisplayContacts Title="Contact Me" /><br /><br />
+    <DisplayEducation Title="Education" /><br /><br />
+    <DisplayExperience Title="Experience" /><br /><br />
+
+</body>
+
+
+
 
 
 

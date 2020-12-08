@@ -7,7 +7,9 @@
 @inject IResumeService _resumeService
 @inject PublicClient PublicClient
 <!--Header-->
-<h3>@Title</h3>
+@*<h3 style="text-align:left;background-color:#343a40; color:#fed136">@Title</h3>*@
+<h3 style="text-align:left">@Title</h3>
+
 
 <!--Body-->
 @if (ContactList == null)
@@ -16,7 +18,8 @@
 }
 else
 {
-    <table class="table table-sm">
+
+    <table class="table text-center table-sm" style="width:100%">
         <thead class="thead-light">
             <tr>
                 <th>Name</th>
@@ -32,39 +35,39 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach(ContactInfo contact in ContactList)
+            @foreach (ContactInfo contact in ContactList)
             {
-            <tr>
-                <td>@contact.Name</td>
-                @*<th>@school.Major</th>*@
-                <td>@contact.Phone</td>
-                <td>@contact.Email</td>
-                <td>@contact.Address</td>
-                @if (authState.User.Identity.IsAuthenticated)
-                {
-                    <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary" style="color:black">Modify</button>
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><button class="btn-xs btn-success" @onclick="@(() => OnEditClick(contact))">  EDIT  </button></li>
-                                <li><button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(contact.ContactId))">DELETE</button></li>
-                            </ul>
+                <tr>
+                    <td>@contact.Name</td>
+                    @*<th>@school.Major</th>*@
+                    <td>@contact.Phone</td>
+                    <td>@contact.Email</td>
+                    <td>@contact.Address</td>
+                    @if (authState.User.Identity.IsAuthenticated)
+                    {
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary" style="color:black">Modify</button>
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><button class="btn-xs btn-success" @onclick="@(() => OnEditClick(contact))">  EDIT  </button></li>
+                                    <li><button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(contact.ContactId))">DELETE</button></li>
+                                </ul>
 
-                        </div>
-                    </td>
-                }
+                            </div>
+                        </td>
+                    }
 
-            </tr>
+                </tr>
             }
         </tbody>
     </table>
 
     @if (bVisible)
     {
-        <h5>Edit Education</h5>
+        <h5>Edit Contact</h5>
         <!--Body-->
         <EditForm Model="@ResumeField">
 
@@ -82,7 +85,7 @@ else
                 <label class="col-sm-3 col-form-label">Start:</label>
                 <div class="col-sm-3">
                     <InputNumber class="form-control"
-                               @bind-Value="@ResumeField.MyContactInfo.Phone" />
+                                 @bind-Value="@ResumeField.MyContactInfo.Phone" />
                     @*<ValidationMessage For="@resume.MyContactInfo.Name"/>*@
                 </div>
             </div>
@@ -133,7 +136,7 @@ else
     //Education education = new Education();
 
 
-    //this is a test
+
     protected async override Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();

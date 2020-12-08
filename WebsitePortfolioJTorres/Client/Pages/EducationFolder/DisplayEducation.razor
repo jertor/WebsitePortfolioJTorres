@@ -6,9 +6,9 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager _urlNavigationManager
 @inject IResumeService _resumeService
-
 <!--Header-->
-<h3>@Title</h3>
+<h3 style="text-align:left">@Title</h3>
+
 
 <!--Body-->
 @if (EduList == null)
@@ -17,7 +17,7 @@
 }
 else
 {
-    <table class="table table-sm">
+    <table class="table table-sm text-md-center ">
         <thead class="thead-light">
             <tr>
                 <th>School Name</th>
@@ -173,7 +173,10 @@ else
         Console.WriteLine("Update called from editeducation.razor");
         await _resumeService.UpdateEducation(ResumeField.MyEducation);
         StateHasChanged();
-        //bVisible = false;
+
+        bVisible = false;
+        _urlNavigationManager.NavigateTo("resume", forceLoad: true);
+        ////StateHasChanged();
     }
 
 
@@ -185,6 +188,10 @@ else
         {
             await _resumeService.DeleteEducation(id);
             StateHasChanged();
+            //using foreceload to refresh page:
+            //https://www.pragimtech.com/blog/blazor/force-reload-blazor-component/
+            _urlNavigationManager.NavigateTo("resume", forceLoad:true);
+            //_urlNavigationManager.NavigateTo("/");
         }
 
     }

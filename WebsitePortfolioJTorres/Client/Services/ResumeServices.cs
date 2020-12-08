@@ -71,6 +71,7 @@ namespace WebsitePortfolioJTorres.Client.Services
             Console.WriteLine("Update called from resumeservice");
             var updateContact = await httpClient.PutAsJsonAsync<ContactInfo>("api/contacts", updatedContactInfo);
             return updatedContactInfo;
+            
         }
         public async Task<Education> UpdateEducation(Education updatedEdu)
         {

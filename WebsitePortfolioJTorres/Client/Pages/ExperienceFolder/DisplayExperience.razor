@@ -7,16 +7,17 @@
 @inject NavigationManager _urlNavigationManager
 @inject IResumeService _resumeService
 <!--Header-->
-<h3>@Title</h3>
+<h3 style="text-align:left">@Title</h3>
+
 
 <!--Body-->
 @if (ExpList == null)
 {
-    <p>Loading Education... </p>
+    <p>Loading Experience... </p>
 }
 else
 {
-    <table class="table table-sm">
+    <table class="table text-md-center">
         <thead class="thead-light">
             <tr>
                 <th>School Name</th>
@@ -50,22 +51,22 @@ else
                     {
                         <td>
                             <div class="btn-group">
-                                    <button type="button" class="btn btn-primary" style="color:black">Modify</button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                <button type="button" class="btn btn-primary" style="color:black">Modify</button>
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                     <span class="caret"></span>
                                 </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>
-                                            <button class="btn-xs btn-success" @onclick="@(() => OnEditClick(exp))">  EDIT  </button>
-                                        </li>
-                                        <li>
-                                            <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(exp.ExpId))">DELETE</button>
-                                        </li>
-                                    </ul>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <button class="btn-xs btn-success" @onclick="@(() => OnEditClick(exp))">  EDIT  </button>
+                                    </li>
+                                    <li>
+                                        <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(exp.ExpId))">DELETE</button>
+                                    </li>
+                                </ul>
 
                             </div>
                             @*<button class="btn-xs btn-outline-primary" @onclick="@(()=>OnEditClick(school))">  edit  </button>
-                            <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(school.EduId))">  delete  </button>*@
+                                <button class="btn-xs btn-danger" @onclick="@(() => DeleteOnValidSubmit(school.EduId))">  delete  </button>*@
                         </td>
                     }
 
@@ -76,7 +77,7 @@ else
 
     @if (bVisible)
     {
-        <h5>Edit Education</h5>
+        <h5>Edit Experience</h5>
         <!--Body-->
         <EditForm Model="@ResumeField">
 
@@ -170,7 +171,7 @@ else
     private async Task DeleteOnValidSubmit(int id)
     {
         Console.WriteLine("Delete called");
-        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delet{ResumeField.MyExperience.Employer} ?");
+        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete{ResumeField.MyExperience.Employer} ?");
         if (confirmed)
         {
             await _resumeService.DeleteExperience(id);
@@ -191,7 +192,7 @@ else
         _urlNavigationManager.NavigateTo("addexp");
     }
 
-    
+
 
 
 }
