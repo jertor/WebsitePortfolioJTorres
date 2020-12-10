@@ -31,6 +31,7 @@ namespace WebsitePortfolioJTorres.Client.Services
             await httpClient.DeleteAsync($"api/blog/{id}");
         }
 
+        //Moved to PublicClient
         ////GET
         //public async Task<List<BlogEntry>> GetBlogInfo()
         //{
@@ -45,7 +46,6 @@ namespace WebsitePortfolioJTorres.Client.Services
             Console.WriteLine("Update called from resumeservice");
             var blogInfo = await httpClient.PutAsJsonAsync<BlogEntry>("api/blog", blogUpdated);
             return blogUpdated;
-            //return await httpClient.PutAsJsonAsync<Education>("api/experience", updatedEdu);
         }
     }
 }

@@ -17,12 +17,6 @@ namespace WebsitePortfolioJTorres.Client.Services
             Client = httpClient;
         }
 
-        //private async Task<List<Project>> GetMyProjects() 
-        //{
-        //    var result = await Client.GetFromJsonAsync<List<Project>>("api/myprojects");
-        //    return result;
-        //}
-
         //GET
         public async Task<List<ContactInfo>> GetContactInfo()
         {

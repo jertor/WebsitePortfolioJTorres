@@ -41,6 +41,7 @@ namespace WebsitePortfolioJTorres.Client.Services
         }
 
 
+        //Moved to PublicClient
         //GET
         //public async Task<List<ContactInfo>> GetContactInfo()
         //{

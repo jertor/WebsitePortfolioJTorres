@@ -24,6 +24,7 @@ namespace WebsitePortfolioJTorres.Client.Services
             await httpClient.PostAsJsonAsync("api/MyProjects", addedProj);
         }
 
+        //Moved to PublicClient
         public async Task<List<Project>> GetProjects()
         {
             Console.WriteLine("GetProjects called from ProductService.cs");
