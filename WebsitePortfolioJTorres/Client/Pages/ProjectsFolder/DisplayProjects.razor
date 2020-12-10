@@ -6,54 +6,52 @@
 @inject NavigationManager urlNavigationManager
 @inject IProjectService _projectService
 @inject PublicClient PublicClient
-
 <!--Header-->
-<h4>@Title</h4>
+<h4 style="background-color:#f8f9fa; text-align:center">@Title</h4>
 
 
+<body style="background-color:#f8f9fa">
 
-
-<!--Body-->
-@if (ProjList == null)
-{
-    <p>Loading Projects</p>
-}
-else 
-{
-    <table class="table">
+    <table class=" table table-hover" height="100%" width="100%">
         <thead class="thead-dark">
             <tr>
-                <th>Title</th>
-                <th>Text</th>
-                <th>Img Name</th>
-                <th>Img</th>
-                @if (authState.User.Identity.IsAuthenticated) 
-                {
-                    <th>
-                        <a href="/editprojects">edit</a>
-                    </th> 
-                }
+                <th width="15%">Title</th>
+                <th width="35%">Description</th>
+                <th width="50%">Image</th>
             </tr>
+
         </thead>
         <tbody>
-            @foreach (Project proj in ProjList)
-            {
+            <tr>
+                <td>Project 1</td>
+                <td>This is a test....</td>.
+                <td>
+                    <img height="50%" width="85%" src="/StaticFiles/images/Matrix2.jpg" />
+                    @*<img height="50%" width="50%" src="/StaticFiles/images/Matrix2.jpg" @onclick="NavToProjects" />*@
+                </td>
+            </tr>
+            <tr>
+                <td>Project 2</td>
+                <td>This is NOT a test.... I repeat this is NOT a test... </td>
+                <td>
 
-                <tr>
+                    <img height="50%" width="85%" src="/StaticFiles/images/Image4.jpg" />
+                </td>
+            </tr>
+            <tr>
+                <td>Project 3</td>
+                <td>Merry Christmas Rob! Thanks for all your help this semester!! </td>
+                <td>
 
-                    <td>@proj.Title</td>
-                    <td>@proj.Text</td>
-                    <td>@proj.ImgName</td>
-                    <td>@proj.ImgFile <img src="/StaticFiles/images/testimage.jpg" /></td>
-                    <!--Add image tag-->
-                    @*<img src="/StaticFiles/images/testimage.jpg" />*@
-                </tr>
-            }
-
+                    <img height="50%" width="85%" src="/StaticFiles/images/merryChristmas.jpg" />
+                </td>
+            </tr>
         </tbody>
-
     </table>
-}
+</body>
+
+
+
 
 @code {
     [Parameter]
@@ -74,4 +72,13 @@ else
         ProjList = await PublicClient.Client.GetFromJsonAsync<List<Project>>("api/myprojects");
 
     }
+
+
+    private void NavToProjects()
+    {
+        urlNavigationManager.NavigateTo("test");
+    }
 }
+
+
+

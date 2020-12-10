@@ -8,162 +8,126 @@
 @inject NavigationManager urlNavigationManager
 @inject IBlogService _blogService
 
-@*<header style=" height:50%; blue;background-size:cover; background-image: url('https://media.istockphoto.com/photos/digital-city-picture-id1137271252?k=6&amp;m=1137271252&amp;s=612x612&amp;w=0&amp;h=iPtWxe1YI9SzecoIdfnQM5oWUMxPytha4Al-SXoBbr0=')">
-    <h1>
-        This is a header
+@*Header*@
+<header style="background-color: black;">
+    <button type="submit" class="btn btn-link" style="float:right" @onclick="ReturnHome"><b>Return Home</b></button>
+    <br /><br />
+    <h1 style="text-align:center; color:#fed136; border-bottom-style:groove">
+        My Blog
     </h1>
-</header>*@
+</header>
+
+
 <h1>@Title</h1>
 
-
-
-
-
 <!-- Services-->
-    <section class="page-section" id="blogpage">
-        <div class="container">
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase">Blog Entries</h2>
+<section class="page-section" id="blogpage">
+    <div class="container">
+        <div class="text-center">
+            <h3 class="section-heading text-uppercase">Blog Entries</h3>
 
-                @*Body*@
-                @if (BlogList == null)
-                {
-                    <p>Loading Blog Entries</p>
-                }
-                else
-                {
-                    <table class="table table-dark">
-                        <thead>
+            @*Body*@
+            @if (BlogList == null)
+            {
+                <p>Loading Blog Entries</p>
+            }
+            else
+            {
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Text</th>
+                            <th>Date Added</th>
+                            @if (authState.User.Identity.IsAuthenticated)
+                            {
+                                <th>  </th>
+                                <th><button type="submit" class="btn-sm btn-primary float-md-right" @onclick="NavToAddBlog">Add</button></th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (BlogEntry blog in BlogList)
+                        {
                             <tr>
-                                <th>Title</th>
-                                <th>Text</th>
-                                <th>Date Added</th>
+                                <td>@blog.Title</td>
+                                <td>@blog.Text</td>
+                                <td>@blog.Date</td>
+
                                 @if (authState.User.Identity.IsAuthenticated)
                                 {
-                                    <th>  </th>
-                                    <th><button type="submit" class="btn-sm btn-primary float-md-right" @onclick="NavToAddBlog">Add</button></th>
-                                    @*<button type="submit" class="btn-sm btn-primary" @onclick="NavToAddBlog">Add</button>
-                            <th>
-                                    <a href="/editblog"> edit </a>
-                                </th>*@
+                                    <td><button class="btn-xs btn-success float-md-right" @onclick="@(()=>OnEditClick(blog))">  edit  </button></td>
+                                    <td><button class="btn-xs btn-danger float-md-right" @onclick="@(() => DeleteOnValidSubmit(blog.BlogId))">  delete  </button> </td>
                                 }
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (BlogEntry blog in BlogList)
+
+                        }
+                    </tbody>
+                </table>
+
+                @if (bVisible)
+                {
+
+                    <EditForm Model="@Blog">
+
+                        @*Title*@
+                        <div class="form-group row mb1">
+                            <label class="col-sm-3 col-form-label">Title:</label>
+                            <div class="col-sm-3">
+                                <InputText class="form-control"
+                                           @bind-Value="@Blog.Title" />
+                                @*<ValidationMessage For="@Blog.Title"/>*@
+                            </div>
+                        </div>
+
+                        @*Text*@
+                        <div class="form-group row mb1">
+                            <label class="col-sm-3 col-form-label">Text:</label>
+                            <div class="col-sm-3">
+                                <InputText class="form-control"
+                                           @bind-Value="@Blog.Text" />
+                                @*<ValidationMessage For="@Blog.Text"/>*@
+                            </div>
+                        </div>
+
+                        @*DateAdded*@
+                        <div class="form-group row mb1">
+                            <label class="col-sm-3 col-form-label">Date:</label>
+                            <div class="col-sm-3">
+                                <InputDate class="form-control"
+                                           @bind-Value="@Blog.Date" />
+                                @*<ValidationMessage For="@Blog.Date"/>*@
+                            </div>
+                        </div>
+
+                        @*Checkbox For Assignment Specs*@
+                        <div class="form-group row mb1">
+                            <label class="col-sm-3 col-form-label">Checkbox:</label>
+                            <div class="col-sm-3">
+                                <InputCheckbox class="form-control"
+                                               @bind-Value="@Blog.ExampleCheckbox" />
+                                @*<ValidationMessage For="@Blog.ExampleCheckbox"/>*@
+                            </div>
+                            @if (Blog.ExampleCheckbox == true)
                             {
-                                <tr>
-                                    <td>@blog.Title</td>
-                                    <td>@blog.Text</td>
-                                    <td>@blog.Date</td>
-
-                                    @if (authState.User.Identity.IsAuthenticated)
-                                    {
-                                        <td><button class="btn-xs btn-success float-md-right" @onclick="@(()=>OnEditClick(blog))">  edit  </button></td>
-                                        <td><button class="btn-xs btn-danger float-md-right" @onclick="@(() => DeleteOnValidSubmit(blog.BlogId))">  delete  </button> </td>
-                                    }
-                                </tr>
-
+                                <p>show some text</p>
                             }
-                        </tbody>
-                    </table>
-
-                    @if (bVisible)
-                    {
-
-                        <EditForm Model="@Blog">
-
-                            @*Title*@
-                            <div class="form-group row mb1">
-                                <label class="col-sm-3 col-form-label">Title:</label>
-                                <div class="col-sm-3">
-                                    <InputText class="form-control"
-                                               @bind-Value="@Blog.Title" />
-                                    @*<ValidationMessage For="@Blog.Title"/>*@
-                                </div>
-                            </div>
-
-                            @*Text*@
-                            <div class="form-group row mb1">
-                                <label class="col-sm-3 col-form-label">Text:</label>
-                                <div class="col-sm-3">
-                                    <InputText class="form-control"
-                                               @bind-Value="@Blog.Text" />
-                                    @*<ValidationMessage For="@Blog.Text"/>*@
-                                </div>
-                            </div>
-
-                            @*DateAdded*@
-                            <div class="form-group row mb1">
-                                <label class="col-sm-3 col-form-label">Date:</label>
-                                <div class="col-sm-3">
-                                    <InputDate class="form-control"
-                                               @bind-Value="@Blog.Date" />
-                                    @*<ValidationMessage For="@Blog.Date"/>*@
-                                </div>
-                            </div>
-
-                            @*Checkbox For Assignment Specs*@
-                            <div class="form-group row mb1">
-                                <label class="col-sm-3 col-form-label">Checkbox:</label>
-                                <div class="col-sm-3">
-                                    <InputCheckbox class="form-control"
-                                                   @bind-Value="@Blog.ExampleCheckbox" />
-                                    @*<ValidationMessage For="@Blog.ExampleCheckbox"/>*@
-                                </div>
-                                @if (Blog.ExampleCheckbox == true)
-                                {
-                                    <p>show some text</p>
-                                }
-                            </div>
+                        </div>
 
 
-                            @*Buttons*@
-                            <button class="btn-xs btn-success" @onclick="@UpdateOnValidSubmit">  update  </button>
-                            <button class="btn-xs btn-light" @onclick="@Cancel"> close </button>
+                        @*Buttons*@
+                        <button class="btn-xs btn-success" @onclick="@UpdateOnValidSubmit">  update  </button>
+                        <button class="btn-xs btn-light" @onclick="@Cancel"> close </button>
 
-                        </EditForm>
-                    }
-
+                    </EditForm>
                 }
 
+            }
 
-            </div>
-            @*<div class="row text-center">
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="my-3">E-Commerce</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="my-3">Responsive Design</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="my-3">Web Security</h4>
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                </div>
-            </div>*@
+
         </div>
-    </section>
-
-
-
-
-
-
-
+    </div>
+</section>
 
 
 
@@ -225,10 +189,16 @@
         bVisible = false;
     }
 
-
     private void NavToAddBlog()
     {
         urlNavigationManager.NavigateTo("addblog");
     }
+
+    private void ReturnHome()
+    {
+        urlNavigationManager.NavigateTo("/");
+        StateHasChanged();
+    }
+
 
 }
