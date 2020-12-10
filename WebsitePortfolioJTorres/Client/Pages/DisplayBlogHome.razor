@@ -1,13 +1,30 @@
 ﻿@page "/blog"
 @using WebsitePortfolioJTorres.Client.Pages.BlogFolder
+@inject NavigationManager urlNavigationManager
 
 
-<!--Header-->
-<h2 style="text-align:center; color:black">My Blog</h2>
 
-<DisplayBlog Title="Blog Entries" />
+@*Header*@
+<header style="background-color:black">
+    <button type="submit" class="btn btn-link" style="float:right" @onclick="ReturnHome"><b>Return Home</b></button>
+    <br /><br />
+    <h1 style="text-align:center; color:#fed136; border-bottom-style:groove">
+        My Resume
+    </h1>
+</header>
+<body>
+
+    <DisplayBlog Title="Blog Entries" />
+</body>
+
+
 
 
 @code {
 
+    private void ReturnHome()
+    {
+        urlNavigationManager.NavigateTo("/");
+        StateHasChanged();
+    }
 }

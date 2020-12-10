@@ -1,6 +1,23 @@
 ﻿@page "/email"
-<h3>EmailMe</h3>
+@inject NavigationManager urlNavigationManager
+
+
+<!--Header-->
+<header style="background-color:black">
+    <button type="submit" class="btn btn-link" style="float:right" @onclick="ReturnHome"><b>Return Home</b></button>
+    <br /><br />
+    <h1 style="text-align:center; color:#fed136; border-bottom-style:groove">
+        Contact Me 
+    </h1>
+</header>
 
 @code {
+
+    private void ReturnHome()
+    {
+        urlNavigationManager.NavigateTo("/");
+        StateHasChanged();
+    }
+
 
 }

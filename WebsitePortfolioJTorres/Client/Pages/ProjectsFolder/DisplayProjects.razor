@@ -38,16 +38,18 @@ else
         <tbody>
             @foreach (Project proj in ProjList)
             {
+
                 <tr>
+
                     <td>@proj.Title</td>
-                    <img src="C:\Users\jerto\source\repos\jertor\WebsitePortfolioJTorres\WebsitePortfolioJTorres\Server\StaticFiles\images\testimage.jpg" />
                     <td>@proj.Text</td>
                     <td>@proj.ImgName</td>
-                    <td>@proj.ImgFile</td>
+                    <td>@proj.ImgFile <img src="/StaticFiles/images/testimage.jpg" /></td>
                     <!--Add image tag-->
+                    @*<img src="/StaticFiles/images/testimage.jpg" />*@
                 </tr>
             }
-            <img src="https://images.pexels.com/photos/1714208/pexels-photo-1714208.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;w=500" />
+
         </tbody>
 
     </table>

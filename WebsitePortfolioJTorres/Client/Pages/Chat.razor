@@ -3,6 +3,15 @@
 @inject NavigationManager NavigationManager
 @implements IDisposable
 
+<!--Header-->
+<header style="background-color:black">
+    <button type="submit" class="btn btn-link" style="float:right" @onclick="ReturnHome"><b>Return Home</b></button>
+    <br /><br />
+    <h1 style="text-align:center; color:#fed136; border-bottom-style:groove">
+        My Chat
+    </h1>
+</header>
+
 
 <div class="form-group">
     <label>
@@ -88,7 +97,11 @@
         return hubConnection.SendAsync("SendMessage", userInput, messageInput);
     }
 
-
+    private void ReturnHome()
+    {
+        NavigationManager.NavigateTo("/");
+        StateHasChanged();
+    }
 
 
     public void Dispose()

@@ -1,12 +1,34 @@
 ﻿@page "/projects"
 @using WebsitePortfolioJTorres.Client.Pages.ProjectsFolder
+@inject NavigationManager urlNavigationManager
+
 
 <!--Header-->
-<h2 style="text-align:center; color:black">My Projects</h2>
+<header style="background-color:black">
+    <button type="submit" class="btn btn-link" style="float:right" @onclick="ReturnHome"><b>Return Home</b></button>
+    <br /><br />
+    <h1 style="text-align:center; color:#fed136; border-bottom-style:groove">
+        My Projects
+    </h1>
+</header>
+
+
+<img src="/StaticFiles/images/testimage.jpg" />
+
+
+
 
 <!--Body-->
-<DisplayProjects Title="Projects"/>
+<body>
+    <DisplayProjects Title="Projects" />
+</body>
+
 
 @code {
+    private void ReturnHome()
+    {
+        urlNavigationManager.NavigateTo("/");
+        StateHasChanged();
+    }
 
 }
