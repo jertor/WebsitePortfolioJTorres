@@ -174,7 +174,7 @@ else
         await _resumeService.UpdateEducation(ResumeField.MyEducation);
         StateHasChanged();
 
-        bVisible = false;
+        //bVisible = false;
         _urlNavigationManager.NavigateTo("resume", forceLoad: true);
         ////StateHasChanged();
     }
@@ -183,7 +183,7 @@ else
     private async Task DeleteOnValidSubmit(int id)
     {
         Console.WriteLine("Delete called");
-        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delet{ResumeField.MyEducation.SchoolName} ?");
+        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete?{ResumeField.MyEducation.SchoolName}");
         if (confirmed)
         {
             await _resumeService.DeleteEducation(id);

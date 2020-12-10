@@ -170,11 +170,12 @@ else
     private async Task DeleteOnValidSubmit(int id)
     {
         Console.WriteLine("Delete called");
-        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete{ResumeField.MyExperience.Employer} ?");
+        var confirmed = await Js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete?{ResumeField.MyExperience.Employer} ?");
         if (confirmed)
         {
             await _resumeService.DeleteExperience(id);
             StateHasChanged();
+            _urlNavigationManager.NavigateTo("resume", forceLoad: true);
         }
 
     }
